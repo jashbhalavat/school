@@ -1,0 +1,1781 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>ASEN6060_HW3_Code</title>
+<meta name="generator" content="MATLAB 24.1">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-03-04">
+<meta name="DC.source" content="ASEN6060_HW3_Code.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#2">CODE FOR HW APPENDIX (IGNORE ALL PLOTS)</a>
+</li>
+<li>
+<a href="#3">Constants</a>
+</li>
+<li>
+<a href="#4">Problem 1</a>
+</li>
+<li>
+<a href="#5">Problem 2</a>
+</li>
+<li>
+<a href="#6">Problem 3</a>
+</li>
+<li>
+<a href="#7">Problem 4</a>
+</li>
+<li>
+<a href="#8">Problem 5</a>
+</li>
+<li>
+<a href="#9">Functions</a>
+</li>
+</ul>
+</div>
+<pre class="codeinput">clear; clc; close <span class="string">all</span>;
+</pre>
+<h2 id="2">CODE FOR HW APPENDIX (IGNORE ALL PLOTS)</h2>
+<p>Tolerances have been changed to accommodate all the code</p>
+<pre class="codeinput">
+<span class="comment">% ASEN 6060 - HW 3 Code (Appendix)</span>
+<span class="comment">% Spring 2025</span>
+<span class="comment">% Jash Bhalavat</span>
+</pre>
+<h2 id="3">Constants</h2>
+<pre class="codeinput">G = 6.67408 * 10^-11; <span class="comment">% m3/(kgs2)</span>
+G = G / (10^9); <span class="comment">% km3/(kgs2)</span>
+
+<span class="comment">% Earth</span>
+mu_earth = 398600.435507; <span class="comment">% km3/s2</span>
+a_earth = 149598023; <span class="comment">% km</span>
+e_earth = 0.016708617;
+mass_earth = mu_earth / G; <span class="comment">% kg</span>
+
+<span class="comment">% Moon</span>
+mu_moon = 4902.800118; <span class="comment">% km3/s2</span>
+a_moon = 384400; <span class="comment">% km</span>
+e_moon = 0.05490;
+mass_moon = mu_moon / G; <span class="comment">% kg</span>
+
+<span class="comment">% Earth-Moon system</span>
+mass_ratio_em = mass_moon / (mass_earth + mass_moon);
+m_star_em = mass_earth + mass_moon;
+l_star_em = a_moon;
+t_star_em = sqrt(l_star_em^3/(G * m_star_em));
+
+mu = mass_ratio_em;
+
+<span class="comment">% Earth Moon system equilibrium points</span>
+[em_eq_pts, em_eq_validity] = all_eq_points(mu);
+
+<span class="comment">% Only looking at L1 eq point planar oscillatory modes</span>
+l1_pos = [em_eq_pts(1,:), 0];
+
+l1_in_plane_modes = in_plane_modes(mu, l1_pos);
+
+oscillatory_eval = l1_in_plane_modes(3);
+uxx_l1 = u_xx(mu, l1_pos);
+uxy_l1 = u_xy(mu, l1_pos);
+uyy_l1 = u_yy(mu, l1_pos);
+U_star_XX = [uxx_l1, uxy_l1; uxy_l1, uyy_l1];
+
+Omega = [0 2; -2 0];
+
+A2D = [zeros(2), eye(2); U_star_XX, Omega];
+
+[V, D] = eig(A2D);
+
+oscillatory_evec = real(V(:,3));
+
+oscillatory_pos_mag = norm([oscillatory_evec(1), oscillatory_evec(2)]);
+
+pos_mag_req = 0.0001;
+
+oscillatory_mag_factor = pos_mag_req / oscillatory_pos_mag;
+
+oscillatory_ic = oscillatory_evec .* oscillatory_mag_factor;
+
+<span class="comment">% Time is one period</span>
+t = linspace(0, 2*pi/imag(oscillatory_eval), 1000);
+
+xi_0 = oscillatory_ic(1);
+xi_dot_0 = oscillatory_ic(3);
+eta_0 = oscillatory_ic(2);
+eta_dot_0 = oscillatory_ic(4);
+x0 = [l1_pos(1) + xi_0; l1_pos(2) + eta_0; 0; xi_dot_0; eta_dot_0; 0];
+</pre>
+<h2 id="4">Problem 1</h2>
+<pre class="codeinput">
+<span class="comment">% Set tolerance for numerical integrator</span>
+TOL = 5e-14;
+
+<span class="comment">% Set options for ode113</span>
+options = odeset(<span class="string">'RelTol'</span>, TOL, <span class="string">'AbsTol'</span>, TOL);
+
+<span class="comment">% Arbitrary initial state for demonstration</span>
+state0 = [1, 0, 0, 1, 0, 0]; <span class="comment">% [m, m/s]</span>
+phi0 = eye(6); <span class="comment">% STM matrix evaluated at initial condition is identity</span>
+phi0_row = reshape(phi0, [6, 6]);
+
+state_phi_0 = [state0; phi0_row];
+
+[t_out, state_out] = ode113(@(t,state)CR3BP_full(state, mu), [0, 1], state_phi_0, options);
+</pre>
+<h2 id="5">Problem 2</h2>
+<pre class="codeinput">
+<span class="comment">% Set options for ode113</span>
+options = odeset(<span class="string">'RelTol'</span>, TOL, <span class="string">'AbsTol'</span>, TOL);
+[tout, xout] = ode113(@(t, state)CR3BP(state, mu), [0 t(end)], x0, options);
+
+V0 = [x0; t(end)];
+
+V_soln = gen_3d_periodic_orbit_single_shooting(V0, mu, true);
+
+[tout_corrected, xout_corrected] = ode113(@(t, state)CR3BP(state, mu), [0, V_soln(end)], V_soln(1:6), options);
+
+figure()
+scatter(l1_pos(1), l1_pos(2), <span class="string">'filled'</span>, <span class="string">'black'</span>)
+hold <span class="string">on</span>
+scatter(V_soln(1), V_soln(2), <span class="string">'filled'</span>, <span class="string">'blue'</span>)
+plot(xout_corrected(:,1), xout_corrected(:,2), <span class="string">'LineWidth'</span>,2)
+hold <span class="string">off</span>
+axis <span class="string">equal</span>
+legend(<span class="string">"L1"</span>, <span class="string">"Initial State"</span>, <span class="string">"Corrected Trajectory"</span>)
+grid <span class="string">on</span>
+xlabel(<span class="string">'$$\hat{x}$$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>, <span class="string">'FontSize'</span>,18)
+ylabel(<span class="string">'$$\hat{y}$$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>, <span class="string">'FontSize'</span>,18)
+hold <span class="string">off</span>
+title(<span class="string">"L1 Lyapunov Orbit - Corrected Trajectory"</span>)
+
+figure()
+plot(xout(:,1), xout(:,2), <span class="string">'LineWidth'</span>,2)
+hold <span class="string">on</span>
+scatter(l1_pos(1), l1_pos(2), <span class="string">'filled'</span>, <span class="string">'black'</span>)
+scatter(xi_0 + l1_pos(1), eta_0 + l1_pos(2), <span class="string">'filled'</span>, <span class="string">'blue'</span>)
+
+plot(xout_corrected(:,1), xout_corrected(:,2), <span class="string">'LineWidth'</span>,2)
+axis <span class="string">equal</span>
+legend(<span class="string">"CR3BP Propagation"</span>, <span class="string">"L1"</span>, <span class="string">"Initial State"</span>, <span class="string">"Corrected Trajectory"</span>)
+grid <span class="string">on</span>
+xlabel(<span class="string">'$$\hat{x}$$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>, <span class="string">'FontSize'</span>,18)
+ylabel(<span class="string">'$$\hat{y}$$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>, <span class="string">'FontSize'</span>,18)
+hold <span class="string">off</span>
+title(<span class="string">"L1 Lyapunov Orbit - Initial and Corrected Trajectory"</span>)
+</pre>
+<h2 id="6">Problem 3</h2>
+<pre class="codeinput">V_family = natural_param_continuation(V_soln, mu);
+
+
+<span class="comment">% Plot all family members</span>
+
+p1_pos = [-mu, 0, 0];
+p2_pos = [1-mu, 0, 0];
+
+figure()
+scatter(l1_pos(1), l1_pos(2), <span class="string">'filled'</span>, <span class="string">'red'</span>)
+hold <span class="string">on</span>
+scatter(p1_pos(1), p1_pos(2), <span class="string">'filled'</span>, <span class="string">'blue'</span>)
+scatter(p2_pos(1), p2_pos(2), <span class="string">'filled'</span>, <span class="string">'black'</span>)
+
+<span class="keyword">for</span> i = 1:10:size(V_family, 2)
+    [tout, xout] = ode113(@(t,state)CR3BP(state, mu), [0, V_family(7,i)], V_family(1:6,i), options);
+    plot(xout(:,1), xout(:,2), <span class="string">'LineWidth'</span>,2)
+<span class="keyword">end</span>
+hold <span class="string">off</span>
+legend(<span class="string">"L1"</span>, <span class="string">"Earth"</span>, <span class="string">"Moon"</span>)
+xlabel(<span class="string">'$$\hat{x}$$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>, <span class="string">'FontSize'</span>,18)
+ylabel(<span class="string">'$$\hat{y}$$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>, <span class="string">'FontSize'</span>,18)
+grid <span class="string">on</span>
+axis <span class="string">equal</span>
+title(<span class="string">"L1 Lyapunov Orbit Family"</span>)
+
+figure()
+<span class="keyword">for</span> i = 1:size(V_family,2)
+    x = V_family(1,i);
+    y = V_family(2,i);
+    z = V_family(3,i);
+    x_dot = V_family(4,i);
+    y_dot = V_family(5,i);
+    z_dot = V_family(6,i);
+    r1 = sqrt((x+mu)^2 + y^2 + z^2);
+    r2 = sqrt((x-1+mu)^2 + y^2 + z^2);
+    C(i) = x^2 + y^2 + z^2 + 2*(1-mu)/r1 + mu/r2 - (x_dot^2 + y_dot^2 + z_dot^2);
+<span class="keyword">end</span>
+plot(V_family(end,:)*t_star_em/86400, C, <span class="string">'o'</span>)
+hold <span class="string">on</span>
+scatter(V_family(end,1)*t_star_em/86400, C(1), <span class="string">'filled'</span>, <span class="string">'red'</span>)
+scatter(V_family(end,end)*t_star_em/86400, C(end), <span class="string">'filled'</span>, <span class="string">'black'</span>)
+legend(<span class="string">"Jacobi Constant"</span>, <span class="string">"Start"</span>, <span class="string">"End"</span>)
+xlabel(<span class="string">"Period [days]"</span>)
+ylabel(<span class="string">"Jacobi Constant [-]"</span>)
+grid <span class="string">on</span>
+title(<span class="string">"Jacobi Constant and Period along the Family"</span>)
+</pre>
+<h2 id="7">Problem 4</h2>
+<pre class="codeinput">
+<span class="comment">% Given</span>
+x0 = [0.82340, 0, -0.026755,0,0.13742,0]';
+T = 2.7477;
+V0 = [x0; T];
+
+<span class="comment">% Set options for ode113</span>
+options = odeset(<span class="string">'RelTol'</span>, 5e-14, <span class="string">'AbsTol'</span>, 5e-14);
+
+V_soln = gen_3d_periodic_orbit_single_shooting(V0, mu, true);
+
+[tout_corrected, xout_corrected] = ode113(@(t, state)CR3BP(state, mu), [0, V_soln(end)], V_soln(1:6), options);
+
+<span class="comment">% Earth Moon system equilibrium points</span>
+[em_eq_pts, em_eq_validity] = all_eq_points(mu);
+
+<span class="comment">% Only looking at L1 eq point planar oscillatory modes</span>
+l1_pos = [em_eq_pts(1,:), 0];
+
+<span class="comment">% Set options for ode113</span>
+[tout, xout] = ode113(@(t, state)CR3BP(state, mu), [0 T], x0, options);
+
+p1_pos = [-mu, 0, 0];
+p2_pos = [1-mu, 0, 0];
+
+figure()
+hold <span class="string">on</span>
+scatter3(l1_pos(1), l1_pos(2), l1_pos(3), <span class="string">'filled'</span>, <span class="string">'red'</span>)
+hold <span class="string">on</span>
+scatter3(x0(1), x0(2), x0(3), <span class="string">'filled'</span>, <span class="string">'blue'</span>)
+plot3(xout_corrected(:,1), xout_corrected(:,2), xout_corrected(:,3), <span class="string">'LineWidth'</span>,2)
+<span class="comment">% scatter3(p1_pos(1), p1_pos(2), p1_pos(3), 'filled', 'blue')</span>
+<span class="comment">% scatter3(p2_pos(1), p2_pos(2), p2_pos(3), 'filled', 'black')</span>
+hold <span class="string">off</span>
+legend(<span class="string">"L1"</span>, <span class="string">"Provided Initial Guess"</span>, <span class="string">"Corrected Trajectory"</span>)
+xlabel(<span class="string">'$$\hat{x}$$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>, <span class="string">'FontSize'</span>,18)
+ylabel(<span class="string">'$$\hat{y}$$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>, <span class="string">'FontSize'</span>,18)
+zlabel(<span class="string">'$$\hat{z}$$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>, <span class="string">'FontSize'</span>,18)
+axis <span class="string">equal</span>
+grid <span class="string">on</span>
+title(<span class="string">"L1 Corrected Halo Orbit w/o the Moon"</span>)
+
+figure()
+plot3(xout(:,1), xout(:,2), xout(:,3), <span class="string">'LineWidth'</span>,2)
+hold <span class="string">on</span>
+scatter3(l1_pos(1), l1_pos(2), l1_pos(3), <span class="string">'filled'</span>, <span class="string">'red'</span>)
+scatter3(x0(1), x0(2), x0(3), <span class="string">'filled'</span>, <span class="string">'blue'</span>)
+plot3(xout_corrected(:,1), xout_corrected(:,2), xout_corrected(:,3), <span class="string">'LineWidth'</span>,2)
+<span class="comment">% scatter3(p1_pos(1), p1_pos(2), p1_pos(3), 'filled', 'blue')</span>
+scatter3(p2_pos(1), p2_pos(2), p2_pos(3), <span class="string">'filled'</span>, <span class="string">'black'</span>)
+hold <span class="string">off</span>
+legend(<span class="string">"CR3BP Propagation"</span>, <span class="string">"L1"</span>, <span class="string">"Initial Guess"</span>, <span class="string">"Corrected Trajectory"</span>)
+xlabel(<span class="string">'$$\hat{x}$$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>, <span class="string">'FontSize'</span>,18)
+ylabel(<span class="string">'$$\hat{y}$$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>, <span class="string">'FontSize'</span>,18)
+zlabel(<span class="string">'$$\hat{z}$$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>, <span class="string">'FontSize'</span>,18)
+axis <span class="string">equal</span>
+grid <span class="string">on</span>
+title(<span class="string">"L1 Halo Orbit corrected trajectory"</span>)
+</pre>
+<h2 id="8">Problem 5</h2>
+<pre class="codeinput">V_family = pseudo_arc_length_continuation(V_soln, mu);
+
+<span class="comment">% Plot all family members</span>
+
+p1_pos = [-mu, 0, 0];
+p2_pos = [1-mu, 0, 0];
+
+figure()
+<span class="keyword">for</span> i = 1:size(V_family,2)
+    x = V_family(1,i);
+    y = V_family(2,i);
+    z = V_family(3,i);
+    x_dot = V_family(4,i);
+    y_dot = V_family(5,i);
+    z_dot = V_family(6,i);
+    r1 = sqrt((x+mu)^2 + y^2 + z^2);
+    r2 = sqrt((x-1+mu)^2 + y^2 + z^2);
+    C(i) = x^2 + y^2 + z^2 + 2*(1-mu)/r1 + mu/r2 - (x_dot^2 + y_dot^2 + z_dot^2);
+<span class="keyword">end</span>
+plot(V_family(end,:)*t_star_em/86400, C, <span class="string">'o'</span>)
+hold <span class="string">on</span>
+scatter(V_family(end,1)*t_star_em/86400, C(1), <span class="string">'filled'</span>, <span class="string">'red'</span>)
+scatter(V_family(end,end)*t_star_em/86400, C(end), <span class="string">'filled'</span>, <span class="string">'black'</span>)
+legend(<span class="string">"Jacobi Constant"</span>, <span class="string">"Start"</span>, <span class="string">"End"</span>)
+xlabel(<span class="string">"Period [days]"</span>)
+ylabel(<span class="string">"Jacobi Constant [-]"</span>)
+grid <span class="string">on</span>
+title(<span class="string">"Jacobi Constant and Period along the Family"</span>)
+
+figure()
+subplot(1,2,1)
+scatter3(l1_pos(1), l1_pos(2), l1_pos(3), <span class="string">'filled'</span>, <span class="string">'red'</span>)
+hold <span class="string">on</span>
+scatter3(p2_pos(1), p2_pos(2), p2_pos(3), <span class="string">'filled'</span>, <span class="string">'black'</span>)
+
+<span class="keyword">for</span> i = 1:100:size(V_family, 2)
+    [tout, xout] = ode113(@(t,state)CR3BP(state, mu), [0, V_family(7,i)], V_family(1:6,i), options);
+    plot3(xout(:,1), xout(:,2), xout(:,3), <span class="string">'LineWidth'</span>,2)
+<span class="keyword">end</span>
+hold <span class="string">off</span>
+legend(<span class="string">"L1"</span>, <span class="string">"Moon"</span>)
+xlabel(<span class="string">'$$\hat{x}$$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>, <span class="string">'FontSize'</span>,18)
+ylabel(<span class="string">'$$\hat{y}$$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>, <span class="string">'FontSize'</span>,18)
+title(<span class="string">"L1 Halo Orbit Family"</span>)
+axis <span class="string">equal</span>
+
+subplot(1,2,2)
+scatter3(l1_pos(1), l1_pos(2), l1_pos(3), <span class="string">'filled'</span>, <span class="string">'red'</span>)
+hold <span class="string">on</span>
+scatter3(p2_pos(1), p2_pos(2), p2_pos(3), <span class="string">'filled'</span>, <span class="string">'black'</span>)
+
+<span class="keyword">for</span> i = 1:100:size(V_family, 2)
+    [tout, xout] = ode113(@(t,state)CR3BP(state, mu), [0, V_family(7,i)], V_family(1:6,i), options);
+    plot3(xout(:,1), xout(:,2), xout(:,3), <span class="string">'LineWidth'</span>,2)
+<span class="keyword">end</span>
+hold <span class="string">off</span>
+legend(<span class="string">"L1"</span>, <span class="string">"Moon"</span>)
+xlabel(<span class="string">'$$\hat{x}$$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>, <span class="string">'FontSize'</span>,18)
+ylabel(<span class="string">'$$\hat{y}$$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>, <span class="string">'FontSize'</span>,18)
+zlabel(<span class="string">'$$\hat{z}$$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'Latex'</span>, <span class="string">'FontSize'</span>,18)
+title(<span class="string">"L1 Halo Orbit Family"</span>)
+axis <span class="string">equal</span>
+</pre>
+<h2 id="9">Functions</h2>
+<pre class="codeinput">
+<span class="keyword">function</span> out = u_xx(mu, x_eq)
+    <span class="comment">% Pseudo potential function partial derivative wrt x, x at eq point</span>
+    <span class="comment">% Assuming z = 0</span>
+    x = x_eq(1);
+    y = x_eq(2);
+    z = x_eq(3);
+    r1 = sqrt((x + mu)^2 + y^2 + z^2);
+    r2 = sqrt((x - 1 + mu)^2 + y^2 + z^2);
+    out = 1 - (1-mu)/(r1^3) - mu/(r2^3) + (3*(1-mu)*(x+mu)^2)/(r1^5) + (3*mu*(x-1+mu)^2)/(r2^5);
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> out = u_xy(mu, x_eq)
+    <span class="comment">% Pseudo potential function partial derivative wrt x, y at eq point</span>
+    <span class="comment">% Assuming z = 0</span>
+    x = x_eq(1);
+    y = x_eq(2);
+    z = x_eq(3);
+    r1 = sqrt((x + mu)^2 + y^2 + z^2);
+    r2 = sqrt((x - 1 + mu)^2 + y^2 + z^2);
+    out = (3*(1-mu)*(x+mu)*y)/(r1^5) + (3*mu*y*(x-1+mu))/(r2^5);
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> out = u_xz(mu, x_eq)
+    <span class="comment">% Pseudo potential function partial derivative wrt x, z at eq point</span>
+    x = x_eq(1);
+    y = x_eq(2);
+    z = x_eq(3);
+    r1 = sqrt((x + mu)^2 + y^2 + z^2);
+    r2 = sqrt((x - 1 + mu)^2 + y^2 + z^2);
+    out = 3*(1-mu)*(x+mu)*z/r1^5 + 3*mu*(x-1+mu)*z/r2^5;
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> out = u_yy(mu, x_eq)
+    <span class="comment">% Pseudo potential function partial derivative wrt y, y at eq point</span>
+    <span class="comment">% Assuming z = 0</span>
+    x = x_eq(1);
+    y = x_eq(2);
+    z = x_eq(3);
+    r1 = sqrt((x + mu)^2 + y^2 + z^2);
+    r2 = sqrt((x - 1 + mu)^2 + y^2 + z^2);
+    out = 1 - (1-mu)/(r1^3) - mu/(r2^3) + (3*(1-mu)*y^2)/(r1^5) + (3*mu*y^2)/(r2^5);
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> out = u_yz(mu, x_eq)
+    <span class="comment">% Pseudo potential function partial derivative wrt y, z at eq point</span>
+    x = x_eq(1);
+    y = x_eq(2);
+    z = x_eq(3);
+    r1 = sqrt((x + mu)^2 + y^2 + z^2);
+    r2 = sqrt((x - 1 + mu)^2 + y^2 + z^2);
+    out = 3*(1-mu)*y*z/r1^5 + 3*mu*y*z/r2^5;
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> out = u_zz(mu, x_eq)
+    <span class="comment">% Pseudo potential function partial derivative wrt z, z at eq point</span>
+    <span class="comment">% Assuming z = 0</span>
+    x = x_eq(1);
+    y = x_eq(2);
+    z = x_eq(3);
+    r1 = sqrt((x + mu)^2 + y^2 + z^2);
+    r2 = sqrt((x - 1 + mu)^2 + y^2 + z^2);
+    out = -(1-mu)/(r1^3) - mu/(r2^3) + (3 * (1-mu) * z^2)/(r1^5) + (3*mu*z^2)/(r2^5);
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> V_family = pseudo_arc_length_continuation(V_soln, mu)
+    <span class="comment">% V_soln - First corrected free variable solution</span>
+    <span class="comment">% mu - system parameter</span>
+
+    <span class="comment">% out - Family of free variables</span>
+
+    a = 384400; <span class="comment">% [km] Average earth-moon semi-major axis</span>
+    r_E = 6378.1363; <span class="comment">% [km] Earth equatorial radius (Vallado, Appendix D)</span>
+    r_Moon = 1738; <span class="comment">% [km] Moon equatorial radius (Vallado, Appendix D)</span>
+    r_E_normalized = r_E/a;
+    r_Moon_normalized = r_Moon/a;
+
+    TOL = 1e-12;
+
+    V_family = V_soln;
+    delta_s = 1e-3;
+
+    <span class="comment">% Set options for ode113</span>
+    options = odeset(<span class="string">'RelTol'</span>, TOL, <span class="string">'AbsTol'</span>, TOL);
+
+    [tout_corrected, xout_corrected] = ode113(@(t, state)CR3BP(state, mu), [0, V_soln(end)], V_soln(1:6), options);
+
+    <span class="comment">% Check if initial position is outside the P1, P2 bodies' normalized radius</span>
+    initial_x_pos = V_family(1:3,1);
+    p1_pos = [-mu, 0, 0]';
+    p2_pos = [1-mu, 0, 0]';
+    p1_minus_init_pos = p1_pos - initial_x_pos;
+    p2_minus_init_pos = p2_pos - initial_x_pos;
+    p1_or_p2_bound = false;
+    <span class="keyword">if</span> (norm(p1_minus_init_pos) &lt;= r_E_normalized)
+        p1_or_p2_bound = true;
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> (norm(p2_minus_init_pos) &lt;= r_E_normalized)
+        p1_or_p2_bound = true;
+    <span class="keyword">end</span>
+
+    <span class="comment">% Initialize nHat</span>
+    phi0 = reshape(eye(6), [36,1]);
+    state0 = [V_soln(1:6); phi0];
+    [tout, state_out] = ode113(@(t, state)CR3BP_full(state, mu), [0, V_soln(end)], state0, options);
+    statef = state_out(end, :)';
+    state_dot = CR3BP_full(statef, mu);
+    DF_d = DF_mat(statef, state_dot);
+    prev_n_hat = null(DF_d);
+
+    family_member = 1;
+    <span class="comment">% max_family_members = 2000;</span>
+    max_family_members = 20; <span class="comment">% ONLY FOR APPENDIX CODE</span>
+
+    <span class="comment">% for i = 1:family_members</span>
+    <span class="keyword">while</span> ((~p1_or_p2_bound) &amp;&amp; (family_member &lt;= max_family_members))
+        print_out = sprintf(<span class="string">'Family member - %d'</span>, family_member);
+        disp(print_out)
+        Vd = V_family(:,family_member);
+        state0 = [Vd(1:6); phi0];
+        [tout, state_out] = ode113(@(t, state)CR3BP_full(state, mu), [0, Vd(end)], state0, options);
+        statef = state_out(end, :)';
+        state_dot = CR3BP_full(statef, mu);
+        DF_d = DF_mat(statef, state_dot);
+        n_hat = null(DF_d);
+
+        <span class="keyword">if</span> dot(n_hat, prev_n_hat) &lt; 0
+            n_hat = -1 * n_hat;
+        <span class="keyword">end</span>
+
+        n_hat = n_hat/norm(n_hat);
+
+        V_star = V_family(:,family_member);
+        V = V_star + delta_s*n_hat;
+        H_norm = norm(H_psal(V_family(:,family_member), V_star, delta_s, n_hat, statef));
+        counter = 1;
+
+        <span class="comment">% Check if initial position is outside the P1, P2 bodies' normalized radius</span>
+        <span class="comment">% [tout, xout] = ode113(@(t, state)CR3BP(state, mu), [0, V(end)], V(1:6), options);</span>
+        <span class="comment">% for i = 1:length(tout)</span>
+        <span class="comment">%     p2_minus_pos = p2_pos' - xout(i,1:3);</span>
+        <span class="comment">%     if (norm(p2_minus_pos) &lt; r_Moon_normalized)</span>
+        <span class="comment">%         p1_or_p2_bound = true;</span>
+        <span class="comment">%     end</span>
+        <span class="comment">%     p1_minus_pos = p1_pos' - xout(i,1:3);</span>
+        <span class="comment">%     if (norm(p1_minus_pos) &lt; r_E_normalized)</span>
+        <span class="comment">%         p1_or_p2_bound = true;</span>
+        <span class="comment">%     end</span>
+        <span class="comment">% end</span>
+        initial_x_pos = V_family(1:3,family_member);
+        p1_minus_init_pos = p1_pos - initial_x_pos;
+        p2_minus_init_pos = p2_pos - initial_x_pos;
+        p1_or_p2_bound = false;
+        <span class="keyword">if</span> (norm(p1_minus_init_pos) &lt;= r_E_normalized)
+            p1_or_p2_bound = true;
+        <span class="keyword">end</span>
+        <span class="keyword">if</span> (norm(p2_minus_init_pos) &lt;= r_E_normalized)
+            p1_or_p2_bound = true;
+        <span class="keyword">end</span>
+
+        <span class="keyword">while</span> ((H_norm &gt; TOL) &amp;&amp; (counter &lt; 20))
+            V_i = V(:,counter);
+            state0 = [V_i(1:6); phi0];
+
+            [tout, state_out] = ode113(@(t, state)CR3BP_full(state, mu), [0, V_i(end)], state0, options);
+
+            statef = state_out(end, :)';
+            state_dot = CR3BP_full(statef, mu);
+            H_V = H_psal(V_i, V_star, delta_s, n_hat, statef);
+            H_norm = norm(H_V);
+            DH_V = DH_mat_psal(statef, state_dot, n_hat);
+            V_ip1 = V_i - inv(DH_V) * H_V;
+            V(:,counter+1) = V_ip1;
+            counter = counter + 1;
+        <span class="keyword">end</span>
+        prev_n_hat = n_hat;
+
+        V_family(:,family_member+1) = V(:,end);
+        family_member = family_member + 1;
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> V_family = natural_param_continuation(V_soln, mu)
+    <span class="comment">% V_soln - First corrected free variable solution</span>
+    <span class="comment">% mu - system parameter</span>
+
+    <span class="comment">% out - Family of free variables</span>
+    <span class="comment">% ASSUMPTION - Earth-Moon System!</span>
+
+    a = 384400; <span class="comment">% [km] Average earth-moon semi-major axis</span>
+    r_E = 6378.1363; <span class="comment">% [km] Earth equatorial radius (Vallado, Appendix D)</span>
+    r_Moon = 1738; <span class="comment">% [km] Moon equatorial radius (Vallado, Appendix D)</span>
+    r_E_normalized = r_E/a;
+    r_Moon_normalized = r_Moon/a;
+
+    TOL = 5e-14;
+
+    V_family = V_soln;
+    delta = -2e-3;
+
+    <span class="comment">% Set options for ode113</span>
+    options = odeset(<span class="string">'RelTol'</span>, TOL, <span class="string">'AbsTol'</span>, TOL);
+
+    [tout_corrected, xout_corrected] = ode113(@(t, state)CR3BP(state, mu), [0, V_soln(end)], V_soln(1:6), options);
+
+    <span class="comment">% Check if initial position is outside the P1, P2 bodies' normalized radius</span>
+    initial_x_pos = V_family(1:3,1);
+    p1_pos = [-mu, 0, 0]';
+    p2_pos = [1-mu, 0, 0]';
+    p1_minus_init_pos = p1_pos - initial_x_pos;
+    p2_minus_init_pos = p2_pos - initial_x_pos;
+    p1_or_p2_bound = false;
+    <span class="keyword">if</span> (norm(p1_minus_init_pos) &lt;= r_E_normalized)
+        p1_or_p2_bound = true;
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> (norm(p2_minus_init_pos) &lt;= r_E_normalized)
+        p1_or_p2_bound = true;
+    <span class="keyword">end</span>
+
+    family_member = 1;
+    <span class="comment">% max_family_members = 150;</span>
+    max_family_members = 15; <span class="comment">%% ONLY FOR APPENDIX CODE</span>
+
+    <span class="keyword">while</span> ((~p1_or_p2_bound) &amp;&amp; (family_member &lt;= max_family_members))
+        print_out = sprintf(<span class="string">'Family member - %d'</span>, family_member);
+        disp(print_out)
+        V = V_family(:,family_member);
+        x_star = V(1);
+        x_star_plus_delta = x_star + delta;
+        H_norm = norm(H(V_soln(1:6), xout_corrected(end,:), x_star_plus_delta));
+        counter = 1;
+
+        <span class="comment">% Check if initial position is outside the P1, P2 bodies' normalized radius</span>
+        initial_x_pos = V_family(1:3,family_member);
+        p1_minus_init_pos = p1_pos - initial_x_pos;
+        p2_minus_init_pos = p2_pos - initial_x_pos;
+        p1_or_p2_bound = false;
+        <span class="keyword">if</span> (norm(p1_minus_init_pos) &lt;= r_E_normalized)
+            p1_or_p2_bound = true;
+        <span class="keyword">end</span>
+        <span class="keyword">if</span> (norm(p2_minus_init_pos) &lt;= r_E_normalized)
+            p1_or_p2_bound = true;
+        <span class="keyword">end</span>
+
+        <span class="keyword">while</span> ((H_norm &gt; TOL) &amp;&amp; (counter &lt; 10))
+            V_i = V(:,counter);
+            phi_0 = reshape(eye(6), [36,1]);
+            state0 = [V_i(1:6); phi_0];
+
+            [tout, state_out] = ode113(@(t, state)CR3BP_full(state, mu), [0, V_i(end)], state0, options);
+
+            statef = state_out(end, :)';
+            state_dot = CR3BP_full(statef, mu);
+            H_V = H(V_i(1:6), statef, x_star_plus_delta);
+            H_norm = norm(H_V);
+            DH_V = DH_mat(statef, state_dot);
+            <span class="keyword">try</span>
+                inv(DH_V);
+            <span class="keyword">catch</span>
+                <span class="keyword">break</span>
+            <span class="keyword">end</span>
+            V_ip1 = V_i - inv(DH_V) * H_V;
+            V(:,counter+1) = V_ip1;
+            counter = counter + 1;
+        <span class="keyword">end</span>
+
+        V_family(:,family_member+1) = V(:,end);
+        family_member = family_member + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> out = in_plane_modes(mu, x_eq)
+    <span class="comment">% Calculate four in plane modes for eq points</span>
+    uxx = u_xx(mu, x_eq);
+    uyy = u_yy(mu, x_eq);
+    uzz = u_zz(mu, x_eq);
+    uxy = u_xy(mu, x_eq);
+    Lambda_1 = (-4+uxx+uyy)/2 + (sqrt((4-uxx-uyy)^2 - 4*(uxx*uyy - uxy^2)))/2;
+    Lambda_2 = (-4+uxx+uyy)/2 - (sqrt((4-uxx-uyy)^2 - 4*(uxx*uyy - uxy^2)))/2;
+    lambda_1 = sqrt(Lambda_1);
+    lambda_2 = -sqrt(Lambda_1);
+    lambda_3 = sqrt(Lambda_2);
+    lambda_4 = -sqrt(Lambda_2);
+    out = [lambda_1, lambda_2, lambda_3, lambda_4];
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> out = H(state0, statef, x_star_plus_delta)
+    out = [statef(1) - state0(1);
+            statef(2) - state0(2);
+            statef(3) - state0(3);
+            statef(4) - state0(4);
+            statef(6) - state0(6);
+            state0(2);
+            state0(1) - x_star_plus_delta];
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> out = H_psal(V, V_star, delta_s, n_hat, statef)
+    out = [statef(1) - V(1);
+            statef(2) - V(2);
+            statef(3) - V(3);
+            statef(4) - V(4);
+            statef(6) - V(6);
+            V(2);
+            dot(V-V_star, n_hat) - delta_s];
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> V_soln = gen_3d_periodic_orbit_single_shooting(V0, system_params, plot_input)
+    <span class="comment">% Script to compute a general three-dimensional periodic orbit via single shooting</span>
+    <span class="comment">% Inputs</span>
+    <span class="comment">% V0 - initial guess for a free variable vector</span>
+    <span class="comment">% statef_V0 - final state when V0 is used as initial guess using CR3BRP</span>
+    <span class="comment">% EOMs</span>
+    <span class="comment">% system_params - system parameters</span>
+    <span class="comment">%</span>
+    <span class="comment">% Output</span>
+    <span class="comment">% V_soln - free variable vector corresponding to a solution</span>
+
+    <span class="comment">% Get mass ratio of system</span>
+    mu = system_params(1);
+
+    <span class="comment">% Set tolerance for numerical integrator and constraint vector</span>
+    TOL = 5e-14;
+
+    <span class="comment">% Set options for ode113</span>
+    options = odeset(<span class="string">'RelTol'</span>, TOL, <span class="string">'AbsTol'</span>, TOL);
+
+    <span class="comment">% Propagate V0 non-linear CR3BP EOMs</span>
+    [tout, xout] = ode113(@(t, state)CR3BP(state, mu), [0 V0(end)], V0(1:6), options);
+
+    <span class="comment">% Final final variables using V0</span>
+    statef_V0 = xout(end,:);
+
+    <span class="comment">% Period is a free variable</span>
+    T = V0(end);
+
+    <span class="comment">% Initialize constraint vector norm</span>
+    F_norm(1) = norm(F(V0(:,1), statef_V0));
+
+    <span class="comment">% Matrix of all free variable vectors</span>
+    V(:,1) = V0;
+
+    <span class="comment">% While loop params</span>
+    counter = 1;
+    counter_max = 50;
+
+    <span class="comment">% While loop to reduce F_norm</span>
+    <span class="keyword">while</span> ((F_norm(counter) &gt; TOL) &amp;&amp; (counter &lt; counter_max))
+        phi0 = reshape(eye(6), [36, 1]); <span class="comment">% Initial phi is identity</span>
+        state0 = [V(1:6,counter); phi0];
+
+        <span class="comment">% Propagate full state and STM</span>
+        [t_out, state_out] = ode113(@(t,state)CR3BP_full(state, mu), [0, V(7,counter)], state0, options);
+        statef = state_out(end, :)';
+        state_dot = CR3BP_full(statef, mu);
+        F_i = F(state0, statef);
+        DF_i = DF_mat(statef, state_dot);
+
+        <span class="comment">% Find V_i+1</span>
+        V(:,counter+1) = V(:,counter) - DF_i' * inv(DF_i * DF_i') * F_i;
+
+        <span class="comment">% Calculate F_norm and update counter</span>
+        F_norm(counter+1) = norm(F_i);
+        counter = counter + 1;
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> plot_input
+        figure()
+        plot([1:counter], F_norm, <span class="string">'-o'</span>, <span class="string">'LineWidth'</span>, 2)
+        yscale <span class="string">log</span>
+        grid <span class="string">on</span>
+        xlabel(<span class="string">"Iterations"</span>)
+        ylabel(<span class="string">"F Norm"</span>)
+        title(<span class="string">"Constraint Vector Norm for each Iteration"</span>)
+        hold <span class="string">on</span>
+        tol_yline = ones([counter,1])*TOL;
+
+        plot([1:counter], tol_yline, <span class="string">'red'</span>, <span class="string">'LineWidth'</span>, 2)
+        hold <span class="string">off</span>
+        legend(<span class="string">"Norm"</span>, <span class="string">"Threshold"</span>)
+    <span class="keyword">end</span>
+
+    print_out = sprintf(<span class="string">'Difference in y_dot_0^2 and y_dot_f^2 - %d'</span>, V0(5)^2 - V(5,end)^2);
+    disp(print_out)
+
+    V_soln = V(:,end);
+
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> out = F(state0, statef)
+    <span class="comment">% Modified Constraint Vector</span>
+    out = [statef(1) - state0(1); <span class="comment">% x0</span>
+            statef(2) - state0(2); <span class="comment">% y0</span>
+            statef(3) - state0(3); <span class="comment">% z0</span>
+            statef(4) - state0(4); <span class="comment">% x0_dot</span>
+            statef(6) - state0(6); <span class="comment">% z0_dot</span>
+            state0(2)]; <span class="comment">% y0</span>
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> out = DH_mat_psal(state, state_dot, n_hat)
+    phi_row = state(7:end);
+    phi_mat = reshape(phi_row, [6,6])';
+    phi_minus_I = phi_mat - eye(6);
+    phi_mod = [phi_minus_I(1:4, :); phi_minus_I(6,:)];
+
+    state_dot_col = [state_dot(1:4); state_dot(6)];
+
+    out = [phi_mod, state_dot_col; 0 1 0 0 0 0 0; n_hat'];
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> out = DH_mat(state, state_dot)
+    phi_row = state(7:end);
+    phi_mat = reshape(phi_row, [6,6])';
+    phi_minus_I = phi_mat - eye(6);
+    phi_mod = [phi_minus_I(1:4, :); phi_minus_I(6,:)];
+
+    state_dot_col = [state_dot(1:4); state_dot(6)];
+
+    out = [phi_mod, state_dot_col; 0 1 0 0 0 0 0; 1 0 0 0 0 0 0];
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> out = DF_mat(state, state_dot)
+    <span class="comment">% Modified constraint DF matrix</span>
+
+    <span class="comment">% Convert STM to matrix from row vector</span>
+    phi_row = state(7:end);
+    phi_mat = reshape(phi_row, [6,6])';
+    <span class="comment">% Subtract identity and extract all rows except 5th row</span>
+    phi_minus_I = phi_mat - eye(6);
+    phi_mod = [phi_minus_I(1:4, :); phi_minus_I(6,:)];
+
+    <span class="comment">% Grab states - x_dot, ydot, zdot, xdotdot, zdotdot</span>
+    state_dot_col = [state_dot(1:4); state_dot(6)];
+
+    out = [phi_mod, state_dot_col; 0 1 0 0 0 0 0];
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> state_dot = CR3BP(state, mu)
+    <span class="comment">% Circular Restricted 3 Body Problem non-dimensional EOMs</span>
+    x = state(1);
+    y = state(2);
+    z = state(3);
+    xdot = state(4);
+    ydot = state(5);
+    zdot = state(6);
+
+    r1 = sqrt((x + mu)^2 + (y)^2 + (z)^2);
+    r2 = sqrt((x - 1 + mu)^2 + (y)^2 + (z)^2);
+
+    state_dot(1, 1) = xdot;
+    state_dot(2, 1) = ydot;
+    state_dot(3, 1) = zdot;
+
+    state_dot(4, 1) = 2*ydot + x - (1 - mu)*(x + mu)/(r1^3) - mu * (x - 1 + mu)/(r2^3);
+    state_dot(5, 1) = -2*xdot + y - (1 - mu)*y/(r1^3) - mu*y/(r2^3);
+    state_dot(6, 1) = - (1 - mu)*z/(r1^3) - mu*z/(r2^3);
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> state_phi_dot = CR3BP_full(state_phi, mu)
+    <span class="comment">% Full state vector and state transition matrix differential equation</span>
+    <span class="comment">% Inputs:</span>
+    <span class="comment">% state_phi - Augmented state vector and STM [42x1]. The state vector -</span>
+    <span class="comment">% [x0, y0, z0, x0_dot, y0_dot, z0_dot]. The STM - is 6x6 with each</span>
+    <span class="comment">% element described as - phi_ij = dxi(tf)/dxj(t0). The phi matrix is</span>
+    <span class="comment">% reshaped such that all the rows are concatenated vertically. For</span>
+    <span class="comment">% example -</span>
+    <span class="comment">% phi_mat = [phi11, phi12, phi13, ..., phi16;</span>
+    <span class="comment">%           [phi21, phi22, phi23, ..., phi26;</span>
+    <span class="comment">%           ...</span>
+    <span class="comment">%           [phi61, phi62, phi63, ..., phi66]</span>
+    <span class="comment">% becomes</span>
+    <span class="comment">% phi_row = [phi11, phi12, ..., phi16, phi21, phi22, ..., phi66]'</span>
+    <span class="comment">%</span>
+    <span class="comment">% mu - system mass ratio [-]</span>
+    <span class="comment">%</span>
+    <span class="comment">% Output</span>
+    <span class="comment">% state_phi_dot - Augmented state vector dot and STM_dot [42x1]. The</span>
+    <span class="comment">% augmentation and reshaping scheme remains the same as the input.</span>
+
+    x = state_phi(1);
+    y = state_phi(2);
+    z = state_phi(3);
+    xdot = state_phi(4);
+    ydot = state_phi(5);
+    zdot = state_phi(6);
+
+    r1 = sqrt((x + mu)^2 + (y)^2 + (z)^2);
+    r2 = sqrt((x - 1 + mu)^2 + (y)^2 + (z)^2);
+
+    state_dot(1, 1) = xdot;
+    state_dot(2, 1) = ydot;
+    state_dot(3, 1) = zdot;
+
+    state_dot(4, 1) = 2*ydot + x - (1 - mu)*(x + mu)/(r1^3) - mu * (x - 1 + mu)/(r2^3);
+    state_dot(5, 1) = -2*xdot + y - (1 - mu)*y/(r1^3) - mu*y/(r2^3);
+    state_dot(6, 1) = -(1 - mu)*z/(r1^3) - mu*z/(r2^3);
+
+    <span class="comment">% Calc pseudo-potentials</span>
+    uxx = u_xx(mu, [x, y, z]);
+    uyy = u_yy(mu, [x, y, z]);
+    uxy = u_xy(mu, [x, y, z]);
+    uzz = u_zz(mu, [x, y, z]);
+    U_mat = [uxx, uxy 0; uxy, uyy 0; 0 0 uzz];
+    Omega = [0 2 0; -2 0 0; 0 0 0];
+    A = [zeros(3), eye(3);
+        U_mat, Omega];
+
+    <span class="comment">% Get only the phi elements into a row</span>
+    phi_row = state_phi(7:end);
+
+    <span class="comment">% Converting phi to matrix</span>
+    phi_mat = reshape(phi_row, [6,6])';
+
+    <span class="comment">% Get phi_dot</span>
+    phi_dot_mat = A * phi_mat;
+
+    <span class="comment">% Convert back to row</span>
+    phi_dot_row = reshape(phi_dot_mat', [36,1]);
+
+    <span class="comment">% Augment state and phi (in row form)</span>
+    state_phi_dot = [state_dot; phi_dot_row];
+
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024a</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+clear; clc; close all;
+%% CODE FOR HW APPENDIX (IGNORE ALL PLOTS)
+% Tolerances have been changed to accommodate all the code
+
+% ASEN 6060 - HW 3 Code (Appendix)
+% Spring 2025
+% Jash Bhalavat
+
+%% Constants
+
+G = 6.67408 * 10^-11; % m3/(kgs2)
+G = G / (10^9); % km3/(kgs2)
+
+% Earth
+mu_earth = 398600.435507; % km3/s2
+a_earth = 149598023; % km
+e_earth = 0.016708617;
+mass_earth = mu_earth / G; % kg
+
+% Moon
+mu_moon = 4902.800118; % km3/s2
+a_moon = 384400; % km
+e_moon = 0.05490;
+mass_moon = mu_moon / G; % kg
+
+% Earth-Moon system
+mass_ratio_em = mass_moon / (mass_earth + mass_moon);
+m_star_em = mass_earth + mass_moon;
+l_star_em = a_moon;
+t_star_em = sqrt(l_star_em^3/(G * m_star_em));
+
+mu = mass_ratio_em;
+
+% Earth Moon system equilibrium points
+[em_eq_pts, em_eq_validity] = all_eq_points(mu);
+
+% Only looking at L1 eq point planar oscillatory modes
+l1_pos = [em_eq_pts(1,:), 0];
+
+l1_in_plane_modes = in_plane_modes(mu, l1_pos);
+
+oscillatory_eval = l1_in_plane_modes(3);
+uxx_l1 = u_xx(mu, l1_pos);
+uxy_l1 = u_xy(mu, l1_pos);
+uyy_l1 = u_yy(mu, l1_pos);
+U_star_XX = [uxx_l1, uxy_l1; uxy_l1, uyy_l1];
+
+Omega = [0 2; -2 0];
+
+A2D = [zeros(2), eye(2); U_star_XX, Omega];
+
+[V, D] = eig(A2D);
+
+oscillatory_evec = real(V(:,3));
+
+oscillatory_pos_mag = norm([oscillatory_evec(1), oscillatory_evec(2)]);
+
+pos_mag_req = 0.0001;
+
+oscillatory_mag_factor = pos_mag_req / oscillatory_pos_mag;
+
+oscillatory_ic = oscillatory_evec .* oscillatory_mag_factor;
+
+% Time is one period
+t = linspace(0, 2*pi/imag(oscillatory_eval), 1000);
+
+xi_0 = oscillatory_ic(1);
+xi_dot_0 = oscillatory_ic(3);
+eta_0 = oscillatory_ic(2);
+eta_dot_0 = oscillatory_ic(4);
+x0 = [l1_pos(1) + xi_0; l1_pos(2) + eta_0; 0; xi_dot_0; eta_dot_0; 0];
+
+%% Problem 1
+
+% Set tolerance for numerical integrator
+TOL = 5e-14;
+
+% Set options for ode113
+options = odeset('RelTol', TOL, 'AbsTol', TOL);
+
+% Arbitrary initial state for demonstration
+state0 = [1, 0, 0, 1, 0, 0]; % [m, m/s]
+phi0 = eye(6); % STM matrix evaluated at initial condition is identity
+phi0_row = reshape(phi0, [6, 6]);
+
+state_phi_0 = [state0; phi0_row];
+
+[t_out, state_out] = ode113(@(t,state)CR3BP_full(state, mu), [0, 1], state_phi_0, options);
+
+%% Problem 2
+
+% Set options for ode113
+options = odeset('RelTol', TOL, 'AbsTol', TOL);
+[tout, xout] = ode113(@(t, state)CR3BP(state, mu), [0 t(end)], x0, options);
+
+V0 = [x0; t(end)];
+
+V_soln = gen_3d_periodic_orbit_single_shooting(V0, mu, true);
+
+[tout_corrected, xout_corrected] = ode113(@(t, state)CR3BP(state, mu), [0, V_soln(end)], V_soln(1:6), options);
+
+figure()
+scatter(l1_pos(1), l1_pos(2), 'filled', 'black')
+hold on
+scatter(V_soln(1), V_soln(2), 'filled', 'blue')
+plot(xout_corrected(:,1), xout_corrected(:,2), 'LineWidth',2)
+hold off
+axis equal
+legend("L1", "Initial State", "Corrected Trajectory")
+grid on
+xlabel('$$\hat{x}$$','Interpreter','Latex', 'FontSize',18)
+ylabel('$$\hat{y}$$','Interpreter','Latex', 'FontSize',18)
+hold off
+title("L1 Lyapunov Orbit - Corrected Trajectory")
+
+figure()
+plot(xout(:,1), xout(:,2), 'LineWidth',2)
+hold on
+scatter(l1_pos(1), l1_pos(2), 'filled', 'black')
+scatter(xi_0 + l1_pos(1), eta_0 + l1_pos(2), 'filled', 'blue')
+
+plot(xout_corrected(:,1), xout_corrected(:,2), 'LineWidth',2)
+axis equal
+legend("CR3BP Propagation", "L1", "Initial State", "Corrected Trajectory")
+grid on
+xlabel('$$\hat{x}$$','Interpreter','Latex', 'FontSize',18)
+ylabel('$$\hat{y}$$','Interpreter','Latex', 'FontSize',18)
+hold off
+title("L1 Lyapunov Orbit - Initial and Corrected Trajectory")
+
+
+%% Problem 3
+
+V_family = natural_param_continuation(V_soln, mu);
+
+
+% Plot all family members
+
+p1_pos = [-mu, 0, 0];
+p2_pos = [1-mu, 0, 0];
+
+figure()
+scatter(l1_pos(1), l1_pos(2), 'filled', 'red')
+hold on
+scatter(p1_pos(1), p1_pos(2), 'filled', 'blue')
+scatter(p2_pos(1), p2_pos(2), 'filled', 'black')
+
+for i = 1:10:size(V_family, 2)
+    [tout, xout] = ode113(@(t,state)CR3BP(state, mu), [0, V_family(7,i)], V_family(1:6,i), options);
+    plot(xout(:,1), xout(:,2), 'LineWidth',2)
+end
+hold off
+legend("L1", "Earth", "Moon")
+xlabel('$$\hat{x}$$','Interpreter','Latex', 'FontSize',18)
+ylabel('$$\hat{y}$$','Interpreter','Latex', 'FontSize',18)
+grid on
+axis equal
+title("L1 Lyapunov Orbit Family")
+
+figure()
+for i = 1:size(V_family,2)
+    x = V_family(1,i);
+    y = V_family(2,i);
+    z = V_family(3,i);
+    x_dot = V_family(4,i);
+    y_dot = V_family(5,i);
+    z_dot = V_family(6,i);
+    r1 = sqrt((x+mu)^2 + y^2 + z^2);
+    r2 = sqrt((x-1+mu)^2 + y^2 + z^2);
+    C(i) = x^2 + y^2 + z^2 + 2*(1-mu)/r1 + mu/r2 - (x_dot^2 + y_dot^2 + z_dot^2);
+end
+plot(V_family(end,:)*t_star_em/86400, C, 'o')
+hold on
+scatter(V_family(end,1)*t_star_em/86400, C(1), 'filled', 'red')
+scatter(V_family(end,end)*t_star_em/86400, C(end), 'filled', 'black')
+legend("Jacobi Constant", "Start", "End")
+xlabel("Period [days]")
+ylabel("Jacobi Constant [-]")
+grid on
+title("Jacobi Constant and Period along the Family")
+
+
+%% Problem 4
+
+% Given
+x0 = [0.82340, 0, -0.026755,0,0.13742,0]';
+T = 2.7477;
+V0 = [x0; T];
+
+% Set options for ode113
+options = odeset('RelTol', 5e-14, 'AbsTol', 5e-14);
+
+V_soln = gen_3d_periodic_orbit_single_shooting(V0, mu, true);
+
+[tout_corrected, xout_corrected] = ode113(@(t, state)CR3BP(state, mu), [0, V_soln(end)], V_soln(1:6), options);
+
+% Earth Moon system equilibrium points
+[em_eq_pts, em_eq_validity] = all_eq_points(mu);
+
+% Only looking at L1 eq point planar oscillatory modes
+l1_pos = [em_eq_pts(1,:), 0];
+
+% Set options for ode113
+[tout, xout] = ode113(@(t, state)CR3BP(state, mu), [0 T], x0, options);
+
+p1_pos = [-mu, 0, 0];
+p2_pos = [1-mu, 0, 0];
+
+figure()
+hold on
+scatter3(l1_pos(1), l1_pos(2), l1_pos(3), 'filled', 'red')
+hold on
+scatter3(x0(1), x0(2), x0(3), 'filled', 'blue')
+plot3(xout_corrected(:,1), xout_corrected(:,2), xout_corrected(:,3), 'LineWidth',2)
+% scatter3(p1_pos(1), p1_pos(2), p1_pos(3), 'filled', 'blue')
+% scatter3(p2_pos(1), p2_pos(2), p2_pos(3), 'filled', 'black')
+hold off
+legend("L1", "Provided Initial Guess", "Corrected Trajectory")
+xlabel('$$\hat{x}$$','Interpreter','Latex', 'FontSize',18)
+ylabel('$$\hat{y}$$','Interpreter','Latex', 'FontSize',18)
+zlabel('$$\hat{z}$$','Interpreter','Latex', 'FontSize',18)
+axis equal
+grid on
+title("L1 Corrected Halo Orbit w/o the Moon")
+
+figure()
+plot3(xout(:,1), xout(:,2), xout(:,3), 'LineWidth',2)
+hold on
+scatter3(l1_pos(1), l1_pos(2), l1_pos(3), 'filled', 'red')
+scatter3(x0(1), x0(2), x0(3), 'filled', 'blue')
+plot3(xout_corrected(:,1), xout_corrected(:,2), xout_corrected(:,3), 'LineWidth',2)
+% scatter3(p1_pos(1), p1_pos(2), p1_pos(3), 'filled', 'blue')
+scatter3(p2_pos(1), p2_pos(2), p2_pos(3), 'filled', 'black')
+hold off
+legend("CR3BP Propagation", "L1", "Initial Guess", "Corrected Trajectory")
+xlabel('$$\hat{x}$$','Interpreter','Latex', 'FontSize',18)
+ylabel('$$\hat{y}$$','Interpreter','Latex', 'FontSize',18)
+zlabel('$$\hat{z}$$','Interpreter','Latex', 'FontSize',18)
+axis equal
+grid on
+title("L1 Halo Orbit corrected trajectory")
+
+
+
+%% Problem 5
+
+V_family = pseudo_arc_length_continuation(V_soln, mu);
+
+% Plot all family members
+
+p1_pos = [-mu, 0, 0];
+p2_pos = [1-mu, 0, 0];
+
+figure()
+for i = 1:size(V_family,2)
+    x = V_family(1,i);
+    y = V_family(2,i);
+    z = V_family(3,i);
+    x_dot = V_family(4,i);
+    y_dot = V_family(5,i);
+    z_dot = V_family(6,i);
+    r1 = sqrt((x+mu)^2 + y^2 + z^2);
+    r2 = sqrt((x-1+mu)^2 + y^2 + z^2);
+    C(i) = x^2 + y^2 + z^2 + 2*(1-mu)/r1 + mu/r2 - (x_dot^2 + y_dot^2 + z_dot^2);
+end
+plot(V_family(end,:)*t_star_em/86400, C, 'o')
+hold on
+scatter(V_family(end,1)*t_star_em/86400, C(1), 'filled', 'red')
+scatter(V_family(end,end)*t_star_em/86400, C(end), 'filled', 'black')
+legend("Jacobi Constant", "Start", "End")
+xlabel("Period [days]")
+ylabel("Jacobi Constant [-]")
+grid on
+title("Jacobi Constant and Period along the Family")
+
+figure()
+subplot(1,2,1)
+scatter3(l1_pos(1), l1_pos(2), l1_pos(3), 'filled', 'red')
+hold on
+scatter3(p2_pos(1), p2_pos(2), p2_pos(3), 'filled', 'black')
+
+for i = 1:100:size(V_family, 2)
+    [tout, xout] = ode113(@(t,state)CR3BP(state, mu), [0, V_family(7,i)], V_family(1:6,i), options);
+    plot3(xout(:,1), xout(:,2), xout(:,3), 'LineWidth',2)
+end
+hold off
+legend("L1", "Moon")
+xlabel('$$\hat{x}$$','Interpreter','Latex', 'FontSize',18)
+ylabel('$$\hat{y}$$','Interpreter','Latex', 'FontSize',18)
+title("L1 Halo Orbit Family")
+axis equal
+
+subplot(1,2,2)
+scatter3(l1_pos(1), l1_pos(2), l1_pos(3), 'filled', 'red')
+hold on
+scatter3(p2_pos(1), p2_pos(2), p2_pos(3), 'filled', 'black')
+
+for i = 1:100:size(V_family, 2)
+    [tout, xout] = ode113(@(t,state)CR3BP(state, mu), [0, V_family(7,i)], V_family(1:6,i), options);
+    plot3(xout(:,1), xout(:,2), xout(:,3), 'LineWidth',2)
+end
+hold off
+legend("L1", "Moon")
+xlabel('$$\hat{x}$$','Interpreter','Latex', 'FontSize',18)
+ylabel('$$\hat{y}$$','Interpreter','Latex', 'FontSize',18)
+zlabel('$$\hat{z}$$','Interpreter','Latex', 'FontSize',18)
+title("L1 Halo Orbit Family")
+axis equal
+
+
+%% Functions
+
+function out = u_xx(mu, x_eq)
+    % Pseudo potential function partial derivative wrt x, x at eq point
+    % Assuming z = 0
+    x = x_eq(1);
+    y = x_eq(2);
+    z = x_eq(3);
+    r1 = sqrt((x + mu)^2 + y^2 + z^2);
+    r2 = sqrt((x - 1 + mu)^2 + y^2 + z^2);
+    out = 1 - (1-mu)/(r1^3) - mu/(r2^3) + (3*(1-mu)*(x+mu)^2)/(r1^5) + (3*mu*(x-1+mu)^2)/(r2^5);
+end
+
+function out = u_xy(mu, x_eq)
+    % Pseudo potential function partial derivative wrt x, y at eq point
+    % Assuming z = 0
+    x = x_eq(1);
+    y = x_eq(2);
+    z = x_eq(3);
+    r1 = sqrt((x + mu)^2 + y^2 + z^2);
+    r2 = sqrt((x - 1 + mu)^2 + y^2 + z^2);
+    out = (3*(1-mu)*(x+mu)*y)/(r1^5) + (3*mu*y*(x-1+mu))/(r2^5);
+end
+
+function out = u_xz(mu, x_eq)
+    % Pseudo potential function partial derivative wrt x, z at eq point
+    x = x_eq(1);
+    y = x_eq(2);
+    z = x_eq(3);
+    r1 = sqrt((x + mu)^2 + y^2 + z^2);
+    r2 = sqrt((x - 1 + mu)^2 + y^2 + z^2);
+    out = 3*(1-mu)*(x+mu)*z/r1^5 + 3*mu*(x-1+mu)*z/r2^5;
+end
+
+function out = u_yy(mu, x_eq)
+    % Pseudo potential function partial derivative wrt y, y at eq point
+    % Assuming z = 0
+    x = x_eq(1);
+    y = x_eq(2);
+    z = x_eq(3);
+    r1 = sqrt((x + mu)^2 + y^2 + z^2);
+    r2 = sqrt((x - 1 + mu)^2 + y^2 + z^2);
+    out = 1 - (1-mu)/(r1^3) - mu/(r2^3) + (3*(1-mu)*y^2)/(r1^5) + (3*mu*y^2)/(r2^5);
+end
+
+function out = u_yz(mu, x_eq)
+    % Pseudo potential function partial derivative wrt y, z at eq point
+    x = x_eq(1);
+    y = x_eq(2);
+    z = x_eq(3);
+    r1 = sqrt((x + mu)^2 + y^2 + z^2);
+    r2 = sqrt((x - 1 + mu)^2 + y^2 + z^2);
+    out = 3*(1-mu)*y*z/r1^5 + 3*mu*y*z/r2^5;
+end
+
+function out = u_zz(mu, x_eq)
+    % Pseudo potential function partial derivative wrt z, z at eq point
+    % Assuming z = 0
+    x = x_eq(1);
+    y = x_eq(2);
+    z = x_eq(3);
+    r1 = sqrt((x + mu)^2 + y^2 + z^2);
+    r2 = sqrt((x - 1 + mu)^2 + y^2 + z^2);
+    out = -(1-mu)/(r1^3) - mu/(r2^3) + (3 * (1-mu) * z^2)/(r1^5) + (3*mu*z^2)/(r2^5);
+end
+
+function V_family = pseudo_arc_length_continuation(V_soln, mu)
+    % V_soln - First corrected free variable solution
+    % mu - system parameter
+
+    % out - Family of free variables
+
+    a = 384400; % [km] Average earth-moon semi-major axis
+    r_E = 6378.1363; % [km] Earth equatorial radius (Vallado, Appendix D)
+    r_Moon = 1738; % [km] Moon equatorial radius (Vallado, Appendix D)
+    r_E_normalized = r_E/a;
+    r_Moon_normalized = r_Moon/a;
+
+    TOL = 1e-12;
+
+    V_family = V_soln;
+    delta_s = 1e-3;
+
+    % Set options for ode113
+    options = odeset('RelTol', TOL, 'AbsTol', TOL);
+
+    [tout_corrected, xout_corrected] = ode113(@(t, state)CR3BP(state, mu), [0, V_soln(end)], V_soln(1:6), options);
+
+    % Check if initial position is outside the P1, P2 bodies' normalized radius
+    initial_x_pos = V_family(1:3,1);
+    p1_pos = [-mu, 0, 0]';
+    p2_pos = [1-mu, 0, 0]';
+    p1_minus_init_pos = p1_pos - initial_x_pos;
+    p2_minus_init_pos = p2_pos - initial_x_pos;
+    p1_or_p2_bound = false;
+    if (norm(p1_minus_init_pos) <= r_E_normalized)
+        p1_or_p2_bound = true;
+    end
+    if (norm(p2_minus_init_pos) <= r_E_normalized)
+        p1_or_p2_bound = true;
+    end
+
+    % Initialize nHat
+    phi0 = reshape(eye(6), [36,1]);
+    state0 = [V_soln(1:6); phi0];
+    [tout, state_out] = ode113(@(t, state)CR3BP_full(state, mu), [0, V_soln(end)], state0, options);
+    statef = state_out(end, :)';
+    state_dot = CR3BP_full(statef, mu);
+    DF_d = DF_mat(statef, state_dot);
+    prev_n_hat = null(DF_d);
+
+    family_member = 1;
+    % max_family_members = 2000;
+    max_family_members = 20; % ONLY FOR APPENDIX CODE
+
+    % for i = 1:family_members
+    while ((~p1_or_p2_bound) && (family_member <= max_family_members))
+        print_out = sprintf('Family member - %d', family_member);
+        disp(print_out)
+        Vd = V_family(:,family_member);
+        state0 = [Vd(1:6); phi0];
+        [tout, state_out] = ode113(@(t, state)CR3BP_full(state, mu), [0, Vd(end)], state0, options);
+        statef = state_out(end, :)';
+        state_dot = CR3BP_full(statef, mu);
+        DF_d = DF_mat(statef, state_dot);
+        n_hat = null(DF_d);
+
+        if dot(n_hat, prev_n_hat) < 0
+            n_hat = -1 * n_hat;
+        end
+
+        n_hat = n_hat/norm(n_hat);
+
+        V_star = V_family(:,family_member);
+        V = V_star + delta_s*n_hat;
+        H_norm = norm(H_psal(V_family(:,family_member), V_star, delta_s, n_hat, statef));
+        counter = 1;
+
+        % Check if initial position is outside the P1, P2 bodies' normalized radius
+        % [tout, xout] = ode113(@(t, state)CR3BP(state, mu), [0, V(end)], V(1:6), options);
+        % for i = 1:length(tout)
+        %     p2_minus_pos = p2_pos' - xout(i,1:3);
+        %     if (norm(p2_minus_pos) < r_Moon_normalized)
+        %         p1_or_p2_bound = true;
+        %     end
+        %     p1_minus_pos = p1_pos' - xout(i,1:3);
+        %     if (norm(p1_minus_pos) < r_E_normalized)
+        %         p1_or_p2_bound = true;
+        %     end
+        % end
+        initial_x_pos = V_family(1:3,family_member);
+        p1_minus_init_pos = p1_pos - initial_x_pos;
+        p2_minus_init_pos = p2_pos - initial_x_pos;
+        p1_or_p2_bound = false;
+        if (norm(p1_minus_init_pos) <= r_E_normalized)
+            p1_or_p2_bound = true;
+        end
+        if (norm(p2_minus_init_pos) <= r_E_normalized)
+            p1_or_p2_bound = true;
+        end
+        
+        while ((H_norm > TOL) && (counter < 20))
+            V_i = V(:,counter);
+            state0 = [V_i(1:6); phi0];
+
+            [tout, state_out] = ode113(@(t, state)CR3BP_full(state, mu), [0, V_i(end)], state0, options);
+            
+            statef = state_out(end, :)';
+            state_dot = CR3BP_full(statef, mu);
+            H_V = H_psal(V_i, V_star, delta_s, n_hat, statef);
+            H_norm = norm(H_V);
+            DH_V = DH_mat_psal(statef, state_dot, n_hat);
+            V_ip1 = V_i - inv(DH_V) * H_V;
+            V(:,counter+1) = V_ip1;
+            counter = counter + 1;
+        end
+        prev_n_hat = n_hat;
+
+        V_family(:,family_member+1) = V(:,end);
+        family_member = family_member + 1;
+    end
+
+end
+
+function V_family = natural_param_continuation(V_soln, mu)
+    % V_soln - First corrected free variable solution
+    % mu - system parameter
+
+    % out - Family of free variables
+    % ASSUMPTION - Earth-Moon System!
+
+    a = 384400; % [km] Average earth-moon semi-major axis
+    r_E = 6378.1363; % [km] Earth equatorial radius (Vallado, Appendix D)
+    r_Moon = 1738; % [km] Moon equatorial radius (Vallado, Appendix D)
+    r_E_normalized = r_E/a;
+    r_Moon_normalized = r_Moon/a;
+
+    TOL = 5e-14;
+
+    V_family = V_soln;
+    delta = -2e-3;
+
+    % Set options for ode113
+    options = odeset('RelTol', TOL, 'AbsTol', TOL);
+
+    [tout_corrected, xout_corrected] = ode113(@(t, state)CR3BP(state, mu), [0, V_soln(end)], V_soln(1:6), options);
+
+    % Check if initial position is outside the P1, P2 bodies' normalized radius
+    initial_x_pos = V_family(1:3,1);
+    p1_pos = [-mu, 0, 0]';
+    p2_pos = [1-mu, 0, 0]';
+    p1_minus_init_pos = p1_pos - initial_x_pos;
+    p2_minus_init_pos = p2_pos - initial_x_pos;
+    p1_or_p2_bound = false;
+    if (norm(p1_minus_init_pos) <= r_E_normalized)
+        p1_or_p2_bound = true;
+    end
+    if (norm(p2_minus_init_pos) <= r_E_normalized)
+        p1_or_p2_bound = true;
+    end
+
+    family_member = 1;
+    % max_family_members = 150;
+    max_family_members = 15; %% ONLY FOR APPENDIX CODE
+
+    while ((~p1_or_p2_bound) && (family_member <= max_family_members))
+        print_out = sprintf('Family member - %d', family_member);
+        disp(print_out)
+        V = V_family(:,family_member);
+        x_star = V(1);
+        x_star_plus_delta = x_star + delta;
+        H_norm = norm(H(V_soln(1:6), xout_corrected(end,:), x_star_plus_delta));
+        counter = 1;
+
+        % Check if initial position is outside the P1, P2 bodies' normalized radius
+        initial_x_pos = V_family(1:3,family_member);
+        p1_minus_init_pos = p1_pos - initial_x_pos;
+        p2_minus_init_pos = p2_pos - initial_x_pos;
+        p1_or_p2_bound = false;
+        if (norm(p1_minus_init_pos) <= r_E_normalized)
+            p1_or_p2_bound = true;
+        end
+        if (norm(p2_minus_init_pos) <= r_E_normalized)
+            p1_or_p2_bound = true;
+        end
+        
+        while ((H_norm > TOL) && (counter < 10))
+            V_i = V(:,counter);
+            phi_0 = reshape(eye(6), [36,1]);
+            state0 = [V_i(1:6); phi_0];
+
+            [tout, state_out] = ode113(@(t, state)CR3BP_full(state, mu), [0, V_i(end)], state0, options);
+            
+            statef = state_out(end, :)';
+            state_dot = CR3BP_full(statef, mu);
+            H_V = H(V_i(1:6), statef, x_star_plus_delta);
+            H_norm = norm(H_V);
+            DH_V = DH_mat(statef, state_dot);
+            try
+                inv(DH_V);
+            catch
+                break
+            end
+            V_ip1 = V_i - inv(DH_V) * H_V;
+            V(:,counter+1) = V_ip1;
+            counter = counter + 1;
+        end
+
+        V_family(:,family_member+1) = V(:,end);
+        family_member = family_member + 1;
+    end
+end
+    
+function out = in_plane_modes(mu, x_eq)
+    % Calculate four in plane modes for eq points
+    uxx = u_xx(mu, x_eq);
+    uyy = u_yy(mu, x_eq);
+    uzz = u_zz(mu, x_eq);
+    uxy = u_xy(mu, x_eq);
+    Lambda_1 = (-4+uxx+uyy)/2 + (sqrt((4-uxx-uyy)^2 - 4*(uxx*uyy - uxy^2)))/2;
+    Lambda_2 = (-4+uxx+uyy)/2 - (sqrt((4-uxx-uyy)^2 - 4*(uxx*uyy - uxy^2)))/2;
+    lambda_1 = sqrt(Lambda_1);
+    lambda_2 = -sqrt(Lambda_1);
+    lambda_3 = sqrt(Lambda_2);
+    lambda_4 = -sqrt(Lambda_2);
+    out = [lambda_1, lambda_2, lambda_3, lambda_4];
+end
+
+function out = H(state0, statef, x_star_plus_delta)
+    out = [statef(1) - state0(1);
+            statef(2) - state0(2);
+            statef(3) - state0(3);
+            statef(4) - state0(4);
+            statef(6) - state0(6);
+            state0(2);
+            state0(1) - x_star_plus_delta];
+end
+
+function out = H_psal(V, V_star, delta_s, n_hat, statef)
+    out = [statef(1) - V(1);
+            statef(2) - V(2);
+            statef(3) - V(3);
+            statef(4) - V(4);
+            statef(6) - V(6);
+            V(2);
+            dot(V-V_star, n_hat) - delta_s];
+end
+
+function V_soln = gen_3d_periodic_orbit_single_shooting(V0, system_params, plot_input)
+    % Script to compute a general three-dimensional periodic orbit via single shooting
+    % Inputs
+    % V0 - initial guess for a free variable vector
+    % statef_V0 - final state when V0 is used as initial guess using CR3BRP
+    % EOMs
+    % system_params - system parameters
+    % 
+    % Output
+    % V_soln - free variable vector corresponding to a solution
+
+    % Get mass ratio of system
+    mu = system_params(1);
+
+    % Set tolerance for numerical integrator and constraint vector
+    TOL = 5e-14;
+
+    % Set options for ode113
+    options = odeset('RelTol', TOL, 'AbsTol', TOL);
+
+    % Propagate V0 non-linear CR3BP EOMs
+    [tout, xout] = ode113(@(t, state)CR3BP(state, mu), [0 V0(end)], V0(1:6), options);
+    
+    % Final final variables using V0
+    statef_V0 = xout(end,:);
+
+    % Period is a free variable
+    T = V0(end);
+
+    % Initialize constraint vector norm
+    F_norm(1) = norm(F(V0(:,1), statef_V0));
+    
+    % Matrix of all free variable vectors
+    V(:,1) = V0;
+
+    % While loop params
+    counter = 1;
+    counter_max = 50;
+
+    % While loop to reduce F_norm
+    while ((F_norm(counter) > TOL) && (counter < counter_max))
+        phi0 = reshape(eye(6), [36, 1]); % Initial phi is identity
+        state0 = [V(1:6,counter); phi0];
+    
+        % Propagate full state and STM
+        [t_out, state_out] = ode113(@(t,state)CR3BP_full(state, mu), [0, V(7,counter)], state0, options);
+        statef = state_out(end, :)';
+        state_dot = CR3BP_full(statef, mu);
+        F_i = F(state0, statef);
+        DF_i = DF_mat(statef, state_dot);
+
+        % Find V_i+1
+        V(:,counter+1) = V(:,counter) - DF_i' * inv(DF_i * DF_i') * F_i;
+    
+        % Calculate F_norm and update counter
+        F_norm(counter+1) = norm(F_i);
+        counter = counter + 1;
+    end
+
+    if plot_input
+        figure()
+        plot([1:counter], F_norm, '-o', 'LineWidth', 2)
+        yscale log
+        grid on
+        xlabel("Iterations")
+        ylabel("F Norm")
+        title("Constraint Vector Norm for each Iteration")
+        hold on
+        tol_yline = ones([counter,1])*TOL;
+
+        plot([1:counter], tol_yline, 'red', 'LineWidth', 2)
+        hold off
+        legend("Norm", "Threshold")
+    end
+
+    print_out = sprintf('Difference in y_dot_0^2 and y_dot_f^2 - %d', V0(5)^2 - V(5,end)^2);
+    disp(print_out)
+
+    V_soln = V(:,end);
+
+end
+
+function out = F(state0, statef)
+    % Modified Constraint Vector
+    out = [statef(1) - state0(1); % x0
+            statef(2) - state0(2); % y0
+            statef(3) - state0(3); % z0
+            statef(4) - state0(4); % x0_dot
+            statef(6) - state0(6); % z0_dot
+            state0(2)]; % y0
+end
+
+function out = DH_mat_psal(state, state_dot, n_hat)
+    phi_row = state(7:end);
+    phi_mat = reshape(phi_row, [6,6])';
+    phi_minus_I = phi_mat - eye(6);
+    phi_mod = [phi_minus_I(1:4, :); phi_minus_I(6,:)];
+
+    state_dot_col = [state_dot(1:4); state_dot(6)];
+
+    out = [phi_mod, state_dot_col; 0 1 0 0 0 0 0; n_hat'];
+end
+
+function out = DH_mat(state, state_dot)
+    phi_row = state(7:end);
+    phi_mat = reshape(phi_row, [6,6])';
+    phi_minus_I = phi_mat - eye(6);
+    phi_mod = [phi_minus_I(1:4, :); phi_minus_I(6,:)];
+
+    state_dot_col = [state_dot(1:4); state_dot(6)];
+
+    out = [phi_mod, state_dot_col; 0 1 0 0 0 0 0; 1 0 0 0 0 0 0];
+end
+
+function out = DF_mat(state, state_dot)
+    % Modified constraint DF matrix
+
+    % Convert STM to matrix from row vector
+    phi_row = state(7:end);
+    phi_mat = reshape(phi_row, [6,6])';
+    % Subtract identity and extract all rows except 5th row
+    phi_minus_I = phi_mat - eye(6);
+    phi_mod = [phi_minus_I(1:4, :); phi_minus_I(6,:)];
+
+    % Grab states - x_dot, ydot, zdot, xdotdot, zdotdot
+    state_dot_col = [state_dot(1:4); state_dot(6)];
+
+    out = [phi_mod, state_dot_col; 0 1 0 0 0 0 0];
+end
+
+function state_dot = CR3BP(state, mu)
+    % Circular Restricted 3 Body Problem non-dimensional EOMs
+    x = state(1);
+    y = state(2);
+    z = state(3);
+    xdot = state(4);
+    ydot = state(5);
+    zdot = state(6);
+
+    r1 = sqrt((x + mu)^2 + (y)^2 + (z)^2);
+    r2 = sqrt((x - 1 + mu)^2 + (y)^2 + (z)^2);
+
+    state_dot(1, 1) = xdot;
+    state_dot(2, 1) = ydot;
+    state_dot(3, 1) = zdot;
+
+    state_dot(4, 1) = 2*ydot + x - (1 - mu)*(x + mu)/(r1^3) - mu * (x - 1 + mu)/(r2^3);
+    state_dot(5, 1) = -2*xdot + y - (1 - mu)*y/(r1^3) - mu*y/(r2^3);
+    state_dot(6, 1) = - (1 - mu)*z/(r1^3) - mu*z/(r2^3);
+end
+
+function state_phi_dot = CR3BP_full(state_phi, mu)
+    % Full state vector and state transition matrix differential equation
+    % Inputs:
+    % state_phi - Augmented state vector and STM [42x1]. The state vector -
+    % [x0, y0, z0, x0_dot, y0_dot, z0_dot]. The STM - is 6x6 with each
+    % element described as - phi_ij = dxi(tf)/dxj(t0). The phi matrix is
+    % reshaped such that all the rows are concatenated vertically. For
+    % example - 
+    % phi_mat = [phi11, phi12, phi13, ..., phi16;
+    %           [phi21, phi22, phi23, ..., phi26;
+    %           ...
+    %           [phi61, phi62, phi63, ..., phi66]
+    % becomes
+    % phi_row = [phi11, phi12, ..., phi16, phi21, phi22, ..., phi66]'
+    % 
+    % mu - system mass ratio [-]
+    % 
+    % Output
+    % state_phi_dot - Augmented state vector dot and STM_dot [42x1]. The
+    % augmentation and reshaping scheme remains the same as the input.
+
+    x = state_phi(1);
+    y = state_phi(2);
+    z = state_phi(3);
+    xdot = state_phi(4);
+    ydot = state_phi(5);
+    zdot = state_phi(6);
+
+    r1 = sqrt((x + mu)^2 + (y)^2 + (z)^2);
+    r2 = sqrt((x - 1 + mu)^2 + (y)^2 + (z)^2);
+
+    state_dot(1, 1) = xdot;
+    state_dot(2, 1) = ydot;
+    state_dot(3, 1) = zdot;
+
+    state_dot(4, 1) = 2*ydot + x - (1 - mu)*(x + mu)/(r1^3) - mu * (x - 1 + mu)/(r2^3);
+    state_dot(5, 1) = -2*xdot + y - (1 - mu)*y/(r1^3) - mu*y/(r2^3);
+    state_dot(6, 1) = -(1 - mu)*z/(r1^3) - mu*z/(r2^3);
+    
+    % Calc pseudo-potentials
+    uxx = u_xx(mu, [x, y, z]);
+    uyy = u_yy(mu, [x, y, z]);
+    uxy = u_xy(mu, [x, y, z]);
+    uzz = u_zz(mu, [x, y, z]);
+    U_mat = [uxx, uxy 0; uxy, uyy 0; 0 0 uzz];
+    Omega = [0 2 0; -2 0 0; 0 0 0];
+    A = [zeros(3), eye(3);
+        U_mat, Omega];
+
+    % Get only the phi elements into a row
+    phi_row = state_phi(7:end);
+
+    % Converting phi to matrix
+    phi_mat = reshape(phi_row, [6,6])';
+
+    % Get phi_dot
+    phi_dot_mat = A * phi_mat;
+
+    % Convert back to row
+    phi_dot_row = reshape(phi_dot_mat', [36,1]);
+
+    % Augment state and phi (in row form)
+    state_phi_dot = [state_dot; phi_dot_row];
+
+end
+##### SOURCE END #####
+-->
+</body>
+</html>
