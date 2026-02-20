@@ -1,9 +1,9 @@
-function V_soln = correction(V0, system_params, plot_input)
+function V_soln = correction(V0, system_params, T, Isp, uncorrected_init_thrust, uncorrected_final_thrust, t_star_em, l_star_em, init_mass, uncorrected_final_mass)
     % Script to compute a general three-dimensional periodic orbit via multiple shooting
     % Inputs
-    % V0 - initial guess for a free variable vector
-    % statef_V0 - final state when V0 is used as initial guess using CR3BRP
-    % EOMs
+    % V0 - initial guess for a free variable vector - [x_1_0, delta_t1,
+    % x_2_0, delta_t_2]
+
     % system_params - system parameters
     % 
     % Output
@@ -18,25 +18,23 @@ function V_soln = correction(V0, system_params, plot_input)
     % Set options for ode113
     options = odeset('RelTol', TOL, 'AbsTol', TOL);
 
+    init_fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, T, Isp, uncorrected_init_thrust, t_star_em, l_star_em, init_mass);
+    final_fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, T, Isp, uncorrected_final_thrust, t_star_em, l_star_em, uncorrected_final_mass);
+
     % Propagate V0 non-linear CR3BP EOMs
-    [tout, x1] = ode113(@(t, state)CR3BP(state, mu), [0 V0(7)], V0(1:6), options);
-    [tout, x2] = ode113(@(t, state)CR3BP(state, mu), [0 V0(14)], V0(8:13), options);
-    [tout, x3] = ode113(@(t, state)CR3BP(state, mu), [0 V0(21)], V0(15:20), options);
-    [tout, x4] = ode113(@(t, state)CR3BP(state, mu), [0 V0(28)], V0(22:27), options);
+    [~, x1] = ode113(init_fun, [0, V0(8)], V0(1:7), options);
+    [~, x2] = ode113(final_fun, [0, V0(16)], V0(9:15), options);
     
     % Final final variables using V0
-    % statef_V0 = xout(end,:);
     statef_x1 = x1(end,:)';
     statef_x2 = x2(end,:)';
-    statef_x3 = x3(end,:)';
-    statef_x4 = x4(end,:)';
-    statef_V0 = [statef_x1; V0(7); statef_x2; V0(14); statef_x3; V0(21); statef_x4; V0(28)];
+    statef_V0 = [statef_x1; V0(8); statef_x2; V0(16)];
 
     % Period is a free variable
     % T = V0(end);
 
     % Initialize constraint vector norm
-    F_norm(1) = norm(F(V0, statef_V0, r_des_4));
+    F_norm(1) = norm(F(V0, statef_V0));
     
     % Matrix of all free variable vectors
     V(:,1) = V0;
@@ -51,24 +49,19 @@ function V_soln = correction(V0, system_params, plot_input)
 
     % While loop to reduce F_norm
     while ((F_norm(counter) > TOL) && (counter < counter_max))
-        % x1_0 = [V(1:6,counter); phi0];
-        % x2_0 = [V(8:13,counter); phi0];
-        % x3_0 = [V(15:20,counter); phi0];
-        % x4_0 = [V(22:27,counter); phi0];
+
+        init_fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, T, Isp, uncorrected_init_thrust, t_star_em, l_star_em, V(7,counter));
+        final_fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, T, Isp, uncorrected_final_thrust, t_star_em, l_star_em, V(15,counter));
         
         % Propagate full state and STM
-        [~, x1_out] = ode113(@(t, state)CR3BP(state, mu), [0 V(7,counter)], V(1:6,counter), options);
-        [~, x2_out] = ode113(@(t,state)CR3BP(state, mu), [0 V(14,counter)], V(8:13,counter), options);
-        [~, x3_out] = ode113(@(t,state)CR3BP(state, mu), [0 V(21,counter)], V(15:20,counter), options);
-        [~, x4_out] = ode113(@(t,state)CR3BP(state, mu), [0 V(28,counter)], V(22:27,counter), options);
+        [~, x1_out] = ode113(init_fun, [0 V(8,counter)], V(1:7,counter), options);
+        [~, x2_out] = ode113(final_fun, [0 V(16,counter)], V(9:15,counter), options);
 
         x1_f = x1_out(end, :)';
         x2_f = x2_out(end, :)';
-        x3_f = x3_out(end, :)';
-        x4_f = x4_out(end, :)';
-        statef = [x1_f; V(7,counter); x2_f; V(14,counter); x3_f; V(21,counter); x4_f; V(28,counter)];
+        statef = [x1_f; V(8,counter); x2_f; V(16,counter)];
 
-        F_i = F(V(:,counter), statef, r_des_4);
+        F_i = F(V(:,counter), statef);
         DF_i = DF_mat(V(:,counter), options, mu);
 
         % Find V_i+1

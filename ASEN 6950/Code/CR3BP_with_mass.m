@@ -22,13 +22,6 @@ function state_dot = CR3BP_with_mass(state, mu, T, Isp, T_star, u_rot)
     state_dot(2, 1) = ydot;
     state_dot(3, 1) = zdot;
 
-    % S/C velocity unit vector in rotating frame
-    % v_rot = [state(4), state(5), state(6)];
-    % v_hat_rot = v_rot/norm(v_rot);
-
-    % Only firing in the velocity direction
-    % u_rot = v_hat_rot;
-
     state_dot(4, 1) = 2*ydot + x - (1 - mu)*(x + mu)/(r1^3) - mu * (x - 1 + mu)/(r2^3) + T_star/state(7)*u_rot(1);
     state_dot(5, 1) = -2*xdot + y - (1 - mu)*y/(r1^3) - mu*y/(r2^3) + T_star/state(7)*u_rot(2);
     state_dot(6, 1) = - (1 - mu)*z/(r1^3) - mu*z/(r2^3) + T_star/state(7)*u_rot(3);
