@@ -408,17 +408,6 @@ mult_cross_close_pts = compare_poincare_maps(saved_final_state_init_mult_cross, 
 
 %% Plot uncorrected trajectory - option 1, single cross
 
-figure(8)
-scatter(l2_pos(1), l2_pos(2), 'filled', 'black')
-hold on
-plot(xout_lyapunov_init(:,1), xout_lyapunov_init(:,2), 'blue', 'LineWidth', 2)
-plot(xout_lyapunov_final(:,1), xout_lyapunov_final(:,2), 'red', 'LineWidth', 2)
-grid on
-title("Uncorrected Trajectory Option 1")
-xlabel('$$\hat{x}$$','Interpreter','Latex', 'FontSize',18)
-ylabel('$$\hat{y}$$','Interpreter','Latex', 'FontSize',18)
-
-
 uncorrected_init_idx = single_cross_close_pts(2);
 uncorrected_final_idx = single_cross_close_pts(3);
 uncorrected_init_i = saved_final_state_init_single_cross(uncorrected_init_idx,4);
@@ -431,6 +420,17 @@ uncorrected_init_state0 = xout_lyapunov_init(uncorrected_init_j,:);
 uncorrected_final_state0 = xout_lyapunov_final(uncorrected_final_j,:);
 uncorrected_init_thrust = thrust_direction(:,uncorrected_init_i);
 uncorrected_final_thrust = thrust_direction(:,uncorrected_final_i);
+
+figure(8)
+scatter(l2_pos(1), l2_pos(2), 'filled', 'black')
+hold on
+plot(xout_lyapunov_init(1:uncorrected_init_j,1), xout_lyapunov_init(1:uncorrected_init_j,2), 'blue', 'LineWidth', 2)
+plot(xout_lyapunov_final(uncorrected_final_j:end,1), xout_lyapunov_final(uncorrected_final_j:end,2), 'red', 'LineWidth', 2)
+grid on
+title("Uncorrected Trajectory Option 1")
+xlabel('$$\hat{x}$$','Interpreter','Latex', 'FontSize',18)
+ylabel('$$\hat{y}$$','Interpreter','Latex', 'FontSize',18)
+
 
 fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, T, Isp, uncorrected_init_thrust, t_star_em, l_star_em, init_mass);
 [uncorrected_init_tout, uncorrected_init_xout] = ode113(fun, [0, 25], [uncorrected_init_state0, init_mass], options_single_cross);
@@ -456,16 +456,47 @@ mdot = -(f*l_star_em)/(Isp*9.80665e-3*t_star_em);
 % from both the init and final trajectories
 uncorrected_final_mass = init_mass + mdot*uncorrected_init_tout(end) - mdot*uncorrected_final_tout(end);
 
-V0 = [uncorrected_init_state0'; init_mass; uncorrected_init_tout(end); uncorrected_final_state0'; uncorrected_final_mass; uncorrected_final_tout(end)];
+V0 = [xout_lyapunov_init(1,:)'; tout_lyapunov_init(uncorrected_init_j);
+    uncorrected_init_state0'; uncorrected_init_tout(end);
+    uncorrected_final_state0'; uncorrected_final_tout(end);
+    xout_lyapunov_final(uncorrected_final_j,:)'; tout_lyapunov_final(end) - tout_lyapunov_final(uncorrected_final_j)];
 
-x_1_f = uncorrected_init_xout(end,:)';
+desired_stage_1 = xout_lyapunov_init(1,:)';
+desired_stage_4 = xout_lyapunov_final(end,:)';
 
-e1 = x_1_f - [uncorrected_final_state0'; uncorrected_final_mass];
-F = e1;
+% 
+% x_1_f = uncorrected_init_xout(end,:)';
+% 
+% e1 = x_1_f - [uncorrected_final_state0'; uncorrected_final_mass];
+% F = e1;
 
 % V_soln = correction(V0, mu, true);
-V_soln = correction(V0, mu, T, Isp, uncorrected_init_thrust, uncorrected_final_thrust, t_star_em, l_star_em, init_mass, uncorrected_final_mass);
+V_soln = correction(V0, mu, T, Isp, uncorrected_init_thrust, uncorrected_final_thrust, t_star_em, l_star_em, init_mass, uncorrected_final_mass, desired_stage_1, desired_stage_4);
 
+%% Plot corrected trajectory - option 1, single cross
+
+figure(9)
+scatter(l2_pos(1), l2_pos(2), 'filled', 'black')
+hold on
+plot(xout_lyapunov_init(:,1), xout_lyapunov_init(:,2), 'blue', 'LineWidth', 2)
+plot(xout_lyapunov_final(:,1), xout_lyapunov_final(:,2), 'red', 'LineWidth', 2)
+grid on
+title("Uncorrected Trajectory Option 1")
+xlabel('$$\hat{x}$$','Interpreter','Latex', 'FontSize',18)
+ylabel('$$\hat{y}$$','Interpreter','Latex', 'FontSize',18)
+
+fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, T, Isp, uncorrected_init_thrust, t_star_em, l_star_em, init_mass);
+[corrected_init_tout, corrected_init_xout] = ode113(fun, [0, V_soln(7)], [V_soln(1:6); init_mass], options_no_events);
+plot(corrected_init_xout(:,1), corrected_init_xout(:,2), 'Color', 'black', 'LineWidth', 2)
+
+corrected_final_mass = init_mass + mdot*V_soln(7) - mdot*V_soln(14);
+
+fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, T, Isp, uncorrected_final_thrust, t_star_em, l_star_em, init_mass);
+[corrected_final_tout, corrected_final_xout] = ode113(fun, [0, V_soln(14)], [V_soln(8:13); corrected_final_mass], options_no_events);
+plot(corrected_final_xout(:,1), corrected_final_xout(:,2), 'Color', 'magenta', 'LineWidth', 2)
+hold off
+grid on
+legend("L2", "Initial Orbit", "Final Orbit", "Initial Transfer", "Final Transfer")
 
 
 
