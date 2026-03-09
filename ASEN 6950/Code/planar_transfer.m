@@ -452,26 +452,32 @@ f = (T*t_star_em^2)/(l_star_em*init_mass);
 % g is assumed to be 9.80665e-3 km/s^2
 mdot = -(f*l_star_em)/(Isp*9.80665e-3*t_star_em);
 
-% This is the mass at the end of the burn, so it should have mass removed
-% from both the init and final trajectories
-uncorrected_final_mass = init_mass + mdot*uncorrected_init_tout(end) - mdot*uncorrected_final_tout(end);
 
-V0 = [xout_lyapunov_init(1,:)'; tout_lyapunov_init(uncorrected_init_j);
-    uncorrected_init_state0'; uncorrected_init_tout(end);
-    uncorrected_final_state0'; uncorrected_final_tout(end);
-    xout_lyapunov_final(uncorrected_final_j,:)'; tout_lyapunov_final(end) - tout_lyapunov_final(uncorrected_final_j)];
+% This is the mass at the end of the first burn
+mass_3_0 = init_mass + mdot*abs(uncorrected_final_tout(end));
 
-desired_stage_1 = xout_lyapunov_init(1,:)';
-desired_stage_4 = xout_lyapunov_final(end,:)';
+% V0 = [xout_lyapunov_init(1,:)'; tout_lyapunov_init(uncorrected_init_j);
+%     uncorrected_init_state0'; uncorrected_init_tout(end);
+%     uncorrected_final_state0'; uncorrected_final_tout(end);
+%     xout_lyapunov_final(uncorrected_final_j,:)'; tout_lyapunov_final(end) - tout_lyapunov_final(uncorrected_final_j)];
 
-% 
-% x_1_f = uncorrected_init_xout(end,:)';
-% 
-% e1 = x_1_f - [uncorrected_final_state0'; uncorrected_final_mass];
-% F = e1;
+V1 = [xout_lyapunov_init(1,:)'; tout_lyapunov_init(uncorrected_init_j)];
+V4 = [xout_lyapunov_final(uncorrected_final_j,:)'; tout_lyapunov_final(end) - tout_lyapunov_final(uncorrected_final_j)];
+V2 = [uncorrected_init_state0'; init_mass; uncorrected_init_tout(end); uncorrected_init_thrust];
+V3 = [uncorrected_final_xout(end,1:6)'; mass_3_0; abs(uncorrected_final_tout(end)); uncorrected_final_thrust];
+
+V0 = [V1; V2; V3; V4];
+
+x_1_des = xout_lyapunov_init(1,:)';
+x_4_des = xout_lyapunov_final(end,:)';
+
+% system_params - mu, t_star, l_star, T, Isp
+system_params = [mu, t_star_em, l_star_em, T, Isp, init_mass];
 
 % V_soln = correction(V0, mu, true);
-V_soln = correction(V0, mu, T, Isp, uncorrected_init_thrust, uncorrected_final_thrust, t_star_em, l_star_em, init_mass, uncorrected_final_mass, desired_stage_1, desired_stage_4);
+% V_soln = correction(V0, mu, T, Isp, uncorrected_init_thrust, uncorrected_final_thrust, t_star_em, l_star_em, init_mass, uncorrected_final_mass, desired_stage_1, desired_stage_4);
+
+V_soln = correction(V0, system_params, x_1_des, x_4_des);
 
 %% Plot corrected trajectory - option 1, single cross
 

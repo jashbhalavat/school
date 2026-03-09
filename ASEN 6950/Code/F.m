@@ -1,8 +1,13 @@
-function out = F(state0, statef, desired_stage_1, desired_stage_4)
+function out = F(state0, statef, x_1_des, x_4_des)
     % Modified Constraint Vector
-    out = [statef(1:6) - state0(8:13); % x_1_f - x_2_0
-        statef(8:13) - state0(15:20); % x_2_f - x_3_0
-        statef(15:20) - state0(22:27); % x_3_f - x_4_0
-        statef(22:27) - desired_stage_4;
-        state0(1:6) - desired_stage_1]; % x_4_f - x_f_des
+    F1 = statef(1:6) - state0(8:13); % x1f - x20
+    F2 = [statef(8:13) - state0(19:24); % x2f - x30
+          statef(14) - state0(25); % m2f - m30
+          norm(state0(16:18)) - 1]; % ||uhat2||^2 - 1
+    F3 = [statef(19:24) - state0(30:35); % x3f - x40
+          norm(state0(27:29)) - 1]; % ||uhat3||^2 - 1
+    F4 = [statef(1:6) - x_1_des; % x10 - x1des
+            statef(30:35) - x_4_des]; % x4f - x4des
+    
+    out = [F1; F2; F3; F4];
 end
