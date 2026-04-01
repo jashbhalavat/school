@@ -469,7 +469,7 @@ V2 = [uncorrected_init_state0'; init_mass; uncorrected_init_tout(end); uncorrect
 % V0 = [V1; V2; V3; V4];
 V0 = [V1; V2];
 
-% x_1_des = xout_lyapunov_init(1,:)';
+x_1_des = xout_lyapunov_init(1,:)';
 % x_4_des = xout_lyapunov_final(end,:)';
 x_2_des = uncorrected_final_xout(end,1:6)';
 
@@ -480,7 +480,7 @@ system_params = [mu, t_star_em, l_star_em, T, Isp, init_mass];
 % V_soln = correction(V0, mu, T, Isp, uncorrected_init_thrust, uncorrected_final_thrust, t_star_em, l_star_em, init_mass, uncorrected_final_mass, desired_stage_1, desired_stage_4);
 
 % V_soln = correction(V0, system_params, x_1_des, x_4_des);
-V_soln = correction(V0, system_params, x_2_des);
+V_soln = correction(V0, system_params, x_1_des, x_2_des);
 
 %% Plot corrected trajectory - first two arcs
 

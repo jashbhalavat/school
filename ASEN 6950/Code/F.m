@@ -1,7 +1,8 @@
 % function out = F(state0, statef, x_1_des, x_4_des)
-function out = F(state0, statef, x_2_des, init_mass)
+function out = F(state0, statef, x_1_des, x_2_des, init_mass)
     % Modified Constraint Vector
     F1 = statef(1:6) - state0(8:13); % x1f - x20
+            % state0(1:6) - x_1_des]; % x10 - x1des
     F2 = [statef(8:13) - x_2_des; % x2f - x2des
             norm(state0(16:18))^2 - 1; % ||uhat2||^2 - 1
             state0(14) - init_mass]; % m_2_0 - init_mass

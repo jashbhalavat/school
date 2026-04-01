@@ -1,6 +1,6 @@
 % function V_soln = correction(V0, system_params, T, Isp, uncorrected_init_thrust, uncorrected_final_thrust, t_star_em, l_star, init_mass, uncorrected_final_mass, desired_stage_1, desired_stage_4)
 % function V_soln = correction(V0, system_params, x_1_des, x_4_des)
-function V_soln = correction(V0, system_params, x_2_des)
+function V_soln = correction(V0, system_params, x_1_des, x_2_des)
     % Script to compute a general three-dimensional periodic orbit via multiple shooting
     % Inputs
     % V0 - initial guess for a free variable vector
@@ -67,9 +67,8 @@ function V_soln = correction(V0, system_params, x_2_des)
     counter = 1;
     counter_max = 200;
     
-
     % F_norm(1) = norm(F(V0, statef_V0, x_1_des, x_4_des));
-    F_norm(1) = norm(F(V0, statef_V0, x_2_des, M_sc_0));
+    F_norm(1) = norm(F(V0, statef_V0, x_1_des, x_2_des, M_sc_0));
 
     phi0 = reshape(eye(6), [36, 1]); % Initial phi is identity
 
@@ -115,8 +114,8 @@ function V_soln = correction(V0, system_params, x_2_des)
         % F_i = F(V(:,counter), statef_V, x_1_des, x_4_des);
         % DF_i = DF_mat(V(:,counter), statef_V, options, system_params, x_1_des, x_4_des);
 
-        F_i = F(V(:,counter), statef_V, x_2_des, M_sc_0);
-        DF_i = DF_mat(V(:,counter), statef_V, options, system_params, x_2_des);
+        F_i = F(V(:,counter), statef_V, x_1_des, x_2_des, M_sc_0);
+        DF_i = DF_mat(V(:,counter), statef_V, options, system_params, x_1_des, x_2_des);
 
         % Find V_i+1
         V(:,counter+1) = V(:,counter) - DF_i' * inv(DF_i * DF_i') * F_i;

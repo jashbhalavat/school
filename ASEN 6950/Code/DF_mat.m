@@ -1,5 +1,5 @@
 % function out = DF_mat(V, statef_V, options, system_params, x_1_des, x_4_des)
-function out = DF_mat(V, statef_V, options, system_params, x_2_des)
+function out = DF_mat(V, statef_V, options, system_params, x_1_des, x_2_des)
     % Modified constraint DF matrix
 
     % Get mass ratio of system
@@ -46,8 +46,9 @@ function out = DF_mat(V, statef_V, options, system_params, x_2_des)
     % Non-dim mass
     m_2 = m_2_0/M_sc_0;
     % acceleration due to low thrust
-    a_lt_2 = -f/m_2*uhat_2;
-    a_lt_mat_2 = [a_lt_2(1), 0, 0; 0, a_lt_2(2), 0; 0, 0, a_lt_2(3)];
+    % a_lt_2 = -f/m_2*uhat_2;
+    a_lt_2 = -f/m_2;
+    a_lt_mat_2 = [a_lt_2, 0, 0; 0, a_lt_2, 0; 0, 0, a_lt_2];
     a_lt_dot_2 = -f/m_2^2*uhat_2;
 
     % m_3 = m_3_0/M_sc_0;
@@ -73,7 +74,7 @@ function out = DF_mat(V, statef_V, options, system_params, x_2_des)
     % mdot_3_f = xdot_3_f(7);
     % xdot_3_f = xdot_3_f(1:6);
     % xdot_4_f = CR3BP(x4_f, mu);
-    % xdot_1_des = CR3BP(x_1_des, mu);
+    xdot_1_des = CR3BP(x_1_des, mu);
     % xdot_4_des = CR3BP(x_4_des, mu);
 
     phi_row_1 = x1_f(7:end);
@@ -91,6 +92,7 @@ function out = DF_mat(V, statef_V, options, system_params, x_2_des)
     %         [eye(6); zeros(6)], [xdot_1_0 - xdot_1_des; zeros(6,1)], zeros(12,22), [zeros(6); eye(6)], [zeros(6,1); xdot_4_f - xdot_4_des]];
 
     out = [phi_mat_1, xdot_1_f, -eye(6), zeros([6,5]);
+            % eye(6), zeros(6,1), zeros(6,11);
             zeros(8,7), [phi_mat_2; zeros([2,6])], [zeros([3,1]); a_lt_dot_2; 0; 1], [xdot_2_f; 0; 0], [zeros(3); a_lt_mat_2; [2*uhat_2(1), 2*uhat_2(2), 2*uhat_2(3)]; zeros(1,3)]];
 
 end
