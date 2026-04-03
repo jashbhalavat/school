@@ -19,6 +19,8 @@ function V_soln = correction(V0, system_params, x_1_des, x_2_des, x_3_des)
     T = system_params(4);
     Isp = system_params(5);
     M_sc_0 = system_params(6);
+    f = system_params(7);
+    mdot = system_params(8);
 
     % Set tolerance for numerical integrator and constraint vector
     TOL = 1e-12;
@@ -43,8 +45,8 @@ function V_soln = correction(V0, system_params, x_1_des, x_2_des, x_3_des)
     % Dt4 = V0(36);
 
     % Define functions
-    init_fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, T, Isp, uhat_2, t_star, l_star, m_2_0);
-    final_fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, T, Isp, uhat_3, t_star, l_star, m_3_0);
+    init_fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, uhat_2, f, mdot);
+    final_fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, uhat_3, f, mdot);
 
     % Propagate V0 non-linear CR3BP EOMs
     [~, x1] = ode113(@(t,state)CR3BP(state, mu), [0, Dt1], x_1_0, options);
@@ -62,13 +64,14 @@ function V_soln = correction(V0, system_params, x_1_des, x_2_des, x_3_des)
     
     % statef_V0 = [x_1_f; Dt1; x_2_f; m_2_f; Dt2; uhat_2; x_3_f; m_3_f; Dt3; uhat_3; x_4_f; Dt4];
     statef_V0 = [x_1_f; Dt1; x_2_f; m_2_f; Dt2; uhat_2; x_3_f; m_3_f; Dt3; uhat_3];
+    % statef_V0 = [x_1_f; Dt1; x_2_f; m_2_f; Dt2; uhat_2];
 
     % While loop params
     counter = 1;
-    counter_max = 50;
+    counter_max = 500;
     
     % F_norm(1) = norm(F(V0, statef_V0, x_1_des, x_4_des));
-    F_norm(1) = norm(F(V0, statef_V0, x_1_des, x_2_des, x_3_des, M_sc_0));
+    F_norm(1) = norm(F(V0, statef_V0, x_1_des, x_2_des, x_3_des));
 
     phi0 = reshape(eye(6), [36, 1]); % Initial phi is identity
 
@@ -91,8 +94,8 @@ function V_soln = correction(V0, system_params, x_1_des, x_2_des, x_3_des)
         % Dt4 = V(36,counter);
 
         % Define functions
-        init_fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, T, Isp, uhat_2, t_star, l_star, m_2_0);
-        final_fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, T, Isp, uhat_3, t_star, l_star, m_3_0);
+        init_fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, uhat_2, f, mdot);
+        final_fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, uhat_3,  f, mdot);
 
         % Propagate V0 non-linear CR3BP EOMs
         [~, x1] = ode113(@(t,state)CR3BP(state, mu), [0, Dt1], x_1_0, options);
@@ -110,11 +113,12 @@ function V_soln = correction(V0, system_params, x_1_des, x_2_des, x_3_des)
 
         % statef_V = [x_1_f; Dt1; x_2_f; m_2_f; Dt2; uhat_2; x_3_f; m_3_f; Dt3; uhat_3; x_4_f; Dt4];
         statef_V = [x_1_f; Dt1; x_2_f; m_2_f; Dt2; uhat_2; x_3_f; m_3_f; Dt3; uhat_3];
+        % statef_V = [x_1_f; Dt1; x_2_f; m_2_f; Dt2; uhat_2];
 
         % F_i = F(V(:,counter), statef_V, x_1_des, x_4_des);
         % DF_i = DF_mat(V(:,counter), statef_V, options, system_params, x_1_des, x_4_des);
 
-        F_i = F(V(:,counter), statef_V, x_1_des, x_2_des, x_3_des, M_sc_0);
+        F_i = F(V(:,counter), statef_V, x_1_des, x_2_des, x_3_des);
         DF_i = DF_mat(V(:,counter), statef_V, options, system_params, x_1_des, x_2_des, x_3_des);
 
         % Find V_i+1

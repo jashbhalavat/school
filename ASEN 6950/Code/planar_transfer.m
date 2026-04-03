@@ -29,6 +29,12 @@ Isp = 1320; % sec
 
 init_mass = 100;
 
+% Non-dim thrust
+f = (T*t_star_em^2)/(l_star_em*init_mass);
+
+% g is assumed to be 9.80665e-3 km/s^2
+mdot = -(f*l_star_em)/(Isp*9.80665e-3*t_star_em);
+
 lyapunov_orbits = load("V_family_L2_Lyapunov_orbits.mat").V_family;
 init_orbit_idx = 5;
 final_orbit_idx = 10;
@@ -73,7 +79,7 @@ for i = 1:num_angles
 end
 
 % Initial orbit, initial state
-init_state_0 = [xout_lyapunov_init(1,:), init_mass];
+init_state_0 = [xout_lyapunov_init(1,:), 1];
 
 function status = countNegCrossings(t,state,flag)
     persistent count lastSign
@@ -233,10 +239,10 @@ plot(xout_lyapunov_final(:,1), xout_lyapunov_final(:,2), 'red', 'LineWidth',2)
 
 for j = 1:length(xout_lyapunov_init)
     disp("Single Cross Init Traj - " + j)
-    init_state_0 = [xout_lyapunov_init(j,:), init_mass];
+    init_state_0 = [xout_lyapunov_init(j,:), 1];
     for i = 1:num_angles
         % Start from pointing straight down and rotate ccw
-        fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, T, Isp, thrust_direction(:,i), t_star_em, l_star_em, init_mass);
+        fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, thrust_direction(:,i), f, mdot);
         [tout, xout] = ode113(fun, [0, 10], init_state_0, options_single_cross);
         
         % if xout(end,1) > l2_pos(1)
@@ -254,10 +260,10 @@ count = 0;
 % Single Cross
 for j = 1:length(xout_lyapunov_final)
     disp("Single Cross Final Traj - " + j)
-    init_state_0 = [xout_lyapunov_final(j,:), init_mass];
+    init_state_0 = [xout_lyapunov_final(j,:), 1];
     for i = 1:num_angles
         % Start from pointing straight down and rotate ccw
-        fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, T, Isp, thrust_direction(:,i), t_star_em, l_star_em, init_mass);
+        fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, thrust_direction(:,i), f, mdot);
         [tout, xout] = ode113(fun, [0, -25], init_state_0, options_single_cross);
 
         % if xout(end,1) > l2_pos(1)
@@ -322,10 +328,10 @@ plot(xout_lyapunov_final(:,1), xout_lyapunov_final(:,2), 'red', 'LineWidth',2)
 % Multiple Cross
 for j = 1:length(xout_lyapunov_init)
     disp("Multiple cross Init Traj - " + j)
-    init_state_0 = [xout_lyapunov_init(j,:), init_mass];
+    init_state_0 = [xout_lyapunov_init(j,:), 1];
     for i = 1:num_angles
         count = count + 1;
-        fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, T, Isp, thrust_direction(:,i), t_star_em, l_star_em, init_mass);
+        fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, thrust_direction(:,i), f, mdot);
         sol = ode113(fun, [0, 15], init_state_0, options_mult_cross);
         if init_state_0(2) == 0
             seconds_init = sol.xe(3);
@@ -346,12 +352,12 @@ count = 0;
 % Multiple Cross
 for j = 1:length(xout_lyapunov_final)
     disp("Multiple Cross Final Traj - " + j)
-    init_state_0 = [xout_lyapunov_final(j,:), init_mass];
+    init_state_0 = [xout_lyapunov_final(j,:), 1];
     for i = 1:num_angles
         count = count + 1;
 
         % Start from pointing straight down and rotate ccw
-        fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, T, Isp, thrust_direction(:,i), t_star_em, l_star_em, init_mass);
+        fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, thrust_direction(:,i), f, mdot);
         sol = ode113(fun, [0, -15], init_state_0, options_mult_cross);
         if init_state_0(2) == 0
             seconds_final = sol.xe(3);
@@ -432,13 +438,13 @@ xlabel('$$\hat{x}$$','Interpreter','Latex', 'FontSize',18)
 ylabel('$$\hat{y}$$','Interpreter','Latex', 'FontSize',18)
 
 
-fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, T, Isp, uncorrected_init_thrust, t_star_em, l_star_em, init_mass);
-[uncorrected_init_tout, uncorrected_init_xout] = ode113(fun, [0, 25], [uncorrected_init_state0, init_mass], options_single_cross);
+fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, uncorrected_init_thrust, f, mdot);
+[uncorrected_init_tout, uncorrected_init_xout] = ode113(fun, [0, 25], [uncorrected_init_state0, 1], options_single_cross);
 x_1_f = xout(end,:)';
 plot(uncorrected_init_xout(:,1), uncorrected_init_xout(:,2), 'Color', 'black', 'LineWidth', 2)
 
-fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, T, Isp, uncorrected_final_thrust, t_star_em, l_star_em, init_mass);
-[uncorrected_final_tout, uncorrected_final_xout] = ode113(fun, [0, -25], [uncorrected_final_state0, init_mass], options_single_cross);
+fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, uncorrected_final_thrust, f, mdot);
+[uncorrected_final_tout, uncorrected_final_xout] = ode113(fun, [0, -25], [uncorrected_final_state0, 1], options_single_cross);
 plot(uncorrected_final_xout(:,1), uncorrected_final_xout(:,2), 'Color', 'magenta', 'LineWidth', 2)
 hold off
 grid on
@@ -454,7 +460,8 @@ mdot = -(f*l_star_em)/(Isp*9.80665e-3*t_star_em);
 
 
 % This is the mass at the end of the first burn
-mass_3_0 = init_mass + mdot*abs(uncorrected_final_tout(end));
+mass_2_0 = 1;
+mass_3_0 = mass_2_0 + mdot*abs(uncorrected_final_tout(end));
 
 % V0 = [xout_lyapunov_init(1,:)'; tout_lyapunov_init(uncorrected_init_j);
 %     uncorrected_init_state0'; uncorrected_init_tout(end);
@@ -463,11 +470,12 @@ mass_3_0 = init_mass + mdot*abs(uncorrected_final_tout(end));
 
 V1 = [xout_lyapunov_init(1,:)'; tout_lyapunov_init(uncorrected_init_j)];
 % V4 = [xout_lyapunov_final(uncorrected_final_j,:)'; tout_lyapunov_final(end) - tout_lyapunov_final(uncorrected_final_j)];
-V2 = [uncorrected_init_state0'; init_mass; uncorrected_init_tout(end); uncorrected_init_thrust];
+V2 = [uncorrected_init_state0'; mass_2_0; uncorrected_init_tout(end); uncorrected_init_thrust];
 V3 = [uncorrected_final_xout(end,1:6)'; mass_3_0; abs(uncorrected_final_tout(end)); uncorrected_final_thrust];
 
 % V0 = [V1; V2; V3; V4];
 V0 = [V1; V2; V3];
+% V0 = [V1; V2];
 
 x_1_des = xout_lyapunov_init(1,:)';
 % x_4_des = xout_lyapunov_final(end,:)';
@@ -475,7 +483,7 @@ x_2_des = uncorrected_final_xout(end,1:6)';
 x_3_des = xout_lyapunov_final(uncorrected_final_j,:)';
 
 % system_params - mu, t_star, l_star, T, Isp
-system_params = [mu, t_star_em, l_star_em, T, Isp, init_mass];
+system_params = [mu, t_star_em, l_star_em, T, Isp, init_mass, f, mdot];
 
 % V_soln = correction(V0, mu, true);
 % V_soln = correction(V0, mu, T, Isp, uncorrected_init_thrust, uncorrected_final_thrust, t_star_em, l_star_em, init_mass, uncorrected_final_mass, desired_stage_1, desired_stage_4);
@@ -498,7 +506,7 @@ ylabel('$$\hat{y}$$','Interpreter','Latex', 'FontSize',18)
 [corrected_tout_1, corrected_xout_1] = ode113(@(t,state)CR3BP(state, mu), [0, V_soln(7)], V_soln(1:6), options_no_events);
 plot(corrected_xout_1(:,1), corrected_xout_1(:,2), 'Color', 'Blue', 'LineWidth', 2)
 
-fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, T, Isp, V_soln(16:18), t_star_em, l_star_em, V_soln(14));
+fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, V_soln(16:18), f, mdot);
 [corrected_tout_2, corrected_xout_2] = ode113(fun, [0, V_soln(15)], [V_soln(8:13); V_soln(14)], options_no_events);
 plot(corrected_xout_2(:,1), corrected_xout_2(:,2), 'Color', 'Black', 'LineWidth', 2)
 
@@ -552,11 +560,11 @@ ylabel('$$\hat{y}$$','Interpreter','Latex', 'FontSize',18)
 [corrected_tout_1, corrected_xout_1] = ode113(@(t,state)CR3BP(state, mu), [0, V_soln(7)], V_soln(1:6), options_no_events);
 plot(corrected_xout_1(:,1), corrected_xout_1(:,2), 'Color', 'Blue', 'LineWidth', 2)
 
-fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, T, Isp, V_soln(16:18), t_star_em, l_star_em, V_soln(14));
+fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, V_soln(16:18), f, mdot);
 [corrected_tout_2, corrected_xout_2] = ode113(fun, [0, V_soln(15)], [V_soln(8:13); V_soln(14)], options_no_events);
 plot(corrected_xout_2(:,1), corrected_xout_2(:,2), 'Color', 'Black', 'LineWidth', 2)
 
-fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, T, Isp, V_soln(27:29), t_star_em, l_star_em, V_soln(25));
+fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, V_soln(27:29), f, mdot);
 [corrected_tout_3, corrected_xout_3] = ode113(fun, [0, V_soln(26)], [V_soln(19:24); V_soln(25)], options_no_events);
 plot(corrected_xout_3(:,1), corrected_xout_3(:,2), 'Color', 'Magenta', 'LineWidth', 2)
 
@@ -612,13 +620,13 @@ title("Uncorrected Trajectory Option 1")
 xlabel('$$\hat{x}$$','Interpreter','Latex', 'FontSize',18)
 ylabel('$$\hat{y}$$','Interpreter','Latex', 'FontSize',18)
 
-fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, T, Isp, uncorrected_init_thrust, t_star_em, l_star_em, init_mass);
-[corrected_init_tout, corrected_init_xout] = ode113(fun, [0, V_soln(7)], [V_soln(1:6); init_mass], options_no_events);
+fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, uncorrected_init_thrust, f, mdot);
+[corrected_init_tout, corrected_init_xout] = ode113(fun, [0, V_soln(7)], [V_soln(1:6); 1], options_no_events);
 plot(corrected_init_xout(:,1), corrected_init_xout(:,2), 'Color', 'black', 'LineWidth', 2)
 
 corrected_final_mass = init_mass + mdot*V_soln(7) - mdot*V_soln(14);
 
-fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, T, Isp, uncorrected_final_thrust, t_star_em, l_star_em, init_mass);
+fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, uncorrected_final_thrust, f, mdot);
 [corrected_final_tout, corrected_final_xout] = ode113(fun, [0, V_soln(14)], [V_soln(8:13); corrected_final_mass], options_no_events);
 plot(corrected_final_xout(:,1), corrected_final_xout(:,2), 'Color', 'magenta', 'LineWidth', 2)
 hold off
