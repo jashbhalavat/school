@@ -462,6 +462,7 @@ mdot = -(f*l_star_em)/(Isp*9.80665e-3*t_star_em);
 % This is the mass at the end of the first burn
 mass_2_0 = 1;
 mass_3_0 = mass_2_0 + mdot*abs(uncorrected_final_tout(end));
+mass_4_0 = mass_3_0 + mdot*(tout_lyapunov_final(end) - tout_lyapunov_final(uncorrected_final_j));
 
 % V0 = [xout_lyapunov_init(1,:)'; tout_lyapunov_init(uncorrected_init_j);
 %     uncorrected_init_state0'; uncorrected_init_tout(end);
@@ -469,16 +470,16 @@ mass_3_0 = mass_2_0 + mdot*abs(uncorrected_final_tout(end));
 %     xout_lyapunov_final(uncorrected_final_j,:)'; tout_lyapunov_final(end) - tout_lyapunov_final(uncorrected_final_j)];
 
 V1 = [xout_lyapunov_init(1,:)'; tout_lyapunov_init(uncorrected_init_j)];
-% V4 = [xout_lyapunov_final(uncorrected_final_j,:)'; tout_lyapunov_final(end) - tout_lyapunov_final(uncorrected_final_j)];
+V4 = [xout_lyapunov_final(uncorrected_final_j,:)'; mass_4_0; tout_lyapunov_final(end) - tout_lyapunov_final(uncorrected_final_j)];
 V2 = [uncorrected_init_state0'; mass_2_0; uncorrected_init_tout(end); uncorrected_init_thrust];
 V3 = [uncorrected_final_xout(end,1:6)'; mass_3_0; abs(uncorrected_final_tout(end)); uncorrected_final_thrust];
 
-% V0 = [V1; V2; V3; V4];
-V0 = [V1; V2; V3];
+V0 = [V1; V2; V3; V4];
+% V0 = [V1; V2; V3];
 % V0 = [V1; V2];
 
 x_1_des = xout_lyapunov_init(1,:)';
-% x_4_des = xout_lyapunov_final(end,:)';
+x_4_des = xout_lyapunov_final(end,:)';
 x_2_des = uncorrected_final_xout(end,1:6)';
 x_3_des = xout_lyapunov_final(uncorrected_final_j,:)';
 
@@ -489,7 +490,7 @@ system_params = [mu, t_star_em, l_star_em, T, Isp, init_mass, f, mdot];
 % V_soln = correction(V0, mu, T, Isp, uncorrected_init_thrust, uncorrected_final_thrust, t_star_em, l_star_em, init_mass, uncorrected_final_mass, desired_stage_1, desired_stage_4);
 
 % V_soln = correction(V0, system_params, x_1_des, x_4_des);
-V_soln = correction(V0, system_params, x_1_des, x_2_des, x_3_des);
+V_soln = correction(V0, system_params, x_1_des, x_2_des, x_3_des, x_4_des);
 
 %% Plot corrected trajectory - first two arcs
 
@@ -545,7 +546,7 @@ plot(corrected_tout_1(end) + corrected_tout_2, ones(length(corrected_tout_2),3)*
 legend('$$\hat{u}_{1,x}$$', '$$\hat{u}_{1,y}$$', '$$\hat{u}_{1,z}$$', '$$\hat{u}_{2,x}$$', '$$\hat{u}_{2,y}$$', '$$\hat{u}_{2,z}$$','Interpreter','Latex')
 hold off
 
-%% Plot corrected trajectory - first three arcs
+%% Plot corrected trajectory - first four arcs
 
 figure(9)
 scatter(l2_pos(1), l2_pos(2), 'filled', 'black')
@@ -553,7 +554,7 @@ hold on
 % plot(xout_lyapunov_init(:,1), xout_lyapunov_init(:,2), 'blue', 'LineWidth', 2)
 % plot(xout_lyapunov_final(:,1), xout_lyapunov_final(:,2), 'red', 'LineWidth', 2)
 grid on
-title("Uncorrected Trajectory Option 1")
+title("Corrected Trajectory Option 1")
 xlabel('$$\hat{x}$$','Interpreter','Latex', 'FontSize',18)
 ylabel('$$\hat{y}$$','Interpreter','Latex', 'FontSize',18)
 
@@ -568,6 +569,9 @@ fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, V_soln(27:29), f, mdot);
 [corrected_tout_3, corrected_xout_3] = ode113(fun, [0, V_soln(26)], [V_soln(19:24); V_soln(25)], options_no_events);
 plot(corrected_xout_3(:,1), corrected_xout_3(:,2), 'Color', 'Magenta', 'LineWidth', 2)
 
+[corrected_tout_4, corrected_xout_4] = ode113(@(t,state)CR3BP(state, mu), [0, V_soln(37)], V_soln(30:35), options_no_events);
+plot(corrected_xout_4(:,1), corrected_xout_4(:,2), 'Color', 'Red', 'LineWidth', 2)
+
 % corrected_final_mass = init_mass + mdot*V_soln(7) - mdot*V_soln(14);
 % 
 % fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, T, Isp, uncorrected_final_thrust, t_star_em, l_star_em, init_mass);
@@ -575,37 +579,27 @@ plot(corrected_xout_3(:,1), corrected_xout_3(:,2), 'Color', 'Magenta', 'LineWidt
 % plot(corrected_final_xout(:,1), corrected_final_xout(:,2), 'Color', 'magenta', 'LineWidth', 2)
 hold off
 grid on
-legend("L2", "Initial Orbit", "Initial Transfer", "Final Transfer")
+legend("L2", "Initial Orbit", "Initial Transfer", "Final Transfer", "Final Orbit")
 
 
-%%
 figure(10)
-plot(corrected_tout_1, ones(length(corrected_tout_1),1)*init_mass, 'Color', 'Blue', 'LineWidth', 2)
+plot(corrected_tout_1, ones(length(corrected_tout_1),1), 'Color', 'Blue', 'LineWidth', 2)
 hold on
 grid on
 xlabel("Non-dimensional Time")
-ylabel("Spacecraft Mass [kg]")
+ylabel("Spacecraft Non-Dimensional Mass")
 title("Spacecraft Mass over Time")
 plot(corrected_tout_1(end) + corrected_tout_2, corrected_xout_2(:,7), 'Color', 'Black', 'LineWidth', 2)
-legend("Initial Orbit", "Initial Transfer")
+plot(corrected_tout_1(end) + corrected_tout_2(end) + corrected_tout_3, corrected_xout_3(:,7), 'Color', 'Magenta', 'LineWidth', 2)
+plot(corrected_tout_1(end) + corrected_tout_2(end) + corrected_tout_3(end) + corrected_tout_4, ones(length(corrected_tout_4),1)*V_soln(36), 'Color', 'Red', 'LineWidth', 2)
+legend("Initial Orbit", "Initial Transfer", "Final Transfer", "Final Orbit")
 hold off
 
-figure(11)
-plot(corrected_tout_1, zeros(length(corrected_tout_1),1),'x', 'Color', 'Blue', 'LineWidth', 2)
-plot(corrected_tout_1, zeros(length(corrected_tout_1),1),'+', 'Color', 'Blue', 'LineWidth', 2)
-plot(corrected_tout_1, zeros(length(corrected_tout_1),1),'*', 'Color', 'Blue', 'LineWidth', 2)
-hold on
-grid on
-xlabel("Non-dimensional Time")
-ylabel("Thrust Vector")
-title("Spacecraft Thrust Vector over Time")
-plot(corrected_tout_1(end) + corrected_tout_2, ones(length(corrected_tout_2),3)*V_soln(9),'x', 'Color', 'Black', 'LineWidth', 2)
-plot(corrected_tout_1(end) + corrected_tout_2, ones(length(corrected_tout_2),3)*V_soln(10),'--', 'Color', 'Black', 'LineWidth', 2)
-plot(corrected_tout_1(end) + corrected_tout_2, ones(length(corrected_tout_2),3)*V_soln(11), '-.', 'Color', 'Black', 'LineWidth', 2)
-legend('$$\hat{u}_{1,x}$$', '$$\hat{u}_{1,y}$$', '$$\hat{u}_{1,z}$$', '$$\hat{u}_{2,x}$$', '$$\hat{u}_{2,y}$$', '$$\hat{u}_{2,z}$$','Interpreter','Latex')
-hold off
+%% Mdot measured
 
-
+delta_time = corrected_tout_1(end) + corrected_tout_2(end) + corrected_tout_3(end) - corrected_tout_1(end);
+mass_diff = V_soln(36) - 1;
+mdot_measured = mass_diff/delta_time;
 
 
 %% Plot corrected trajectory - option 1, single cross
