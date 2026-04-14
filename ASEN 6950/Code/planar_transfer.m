@@ -459,37 +459,26 @@ f = (T*t_star_em^2)/(l_star_em*init_mass);
 mdot = -(f*l_star_em)/(Isp*9.80665e-3*t_star_em);
 
 
-% This is the mass at the end of the first burn
-mass_2_0 = 1;
+% This is the mass at the end of the each burn
+mass_1_0 = 1;
+mass_2_0 = mass_1_0;
 mass_3_0 = mass_2_0 + mdot*abs(uncorrected_final_tout(end));
 mass_4_0 = mass_3_0 + mdot*(tout_lyapunov_final(end) - tout_lyapunov_final(uncorrected_final_j));
 
-% V0 = [xout_lyapunov_init(1,:)'; tout_lyapunov_init(uncorrected_init_j);
-%     uncorrected_init_state0'; uncorrected_init_tout(end);
-%     uncorrected_final_state0'; uncorrected_final_tout(end);
-%     xout_lyapunov_final(uncorrected_final_j,:)'; tout_lyapunov_final(end) - tout_lyapunov_final(uncorrected_final_j)];
-
-V1 = [xout_lyapunov_init(1,:)'; tout_lyapunov_init(uncorrected_init_j)];
+V1 = [xout_lyapunov_init(1,:)'; mass_1_0; tout_lyapunov_init(uncorrected_init_j)];
 V4 = [xout_lyapunov_final(uncorrected_final_j,:)'; mass_4_0; tout_lyapunov_final(end) - tout_lyapunov_final(uncorrected_final_j)];
-V2 = [uncorrected_init_state0'; mass_2_0; uncorrected_init_tout(end); uncorrected_init_thrust];
-V3 = [uncorrected_final_xout(end,1:6)'; mass_3_0; abs(uncorrected_final_tout(end)); uncorrected_final_thrust];
+V2 = [uncorrected_init_state0'; mass_2_0; uncorrected_init_thrust; uncorrected_init_tout(end)];
+V3 = [uncorrected_final_xout(end,1:6)'; mass_3_0; uncorrected_final_thrust; abs(uncorrected_final_tout(end))];
 
 V0 = [V1; V2; V3; V4];
-% V0 = [V1; V2; V3];
-% V0 = [V1; V2];
 
 x_1_des = xout_lyapunov_init(1,:)';
 x_4_des = xout_lyapunov_final(end,:)';
 x_2_des = uncorrected_final_xout(end,1:6)';
 x_3_des = xout_lyapunov_final(uncorrected_final_j,:)';
 
-% system_params - mu, t_star, l_star, T, Isp
 system_params = [mu, t_star_em, l_star_em, T, Isp, init_mass, f, mdot];
 
-% V_soln = correction(V0, mu, true);
-% V_soln = correction(V0, mu, T, Isp, uncorrected_init_thrust, uncorrected_final_thrust, t_star_em, l_star_em, init_mass, uncorrected_final_mass, desired_stage_1, desired_stage_4);
-
-% V_soln = correction(V0, system_params, x_1_des, x_4_des);
 V_soln = correction(V0, system_params, x_1_des, x_2_des, x_3_des, x_4_des);
 
 %% Plot corrected trajectory - first two arcs
@@ -558,18 +547,18 @@ title("Corrected Trajectory Option 1")
 xlabel('$$\hat{x}$$','Interpreter','Latex', 'FontSize',18)
 ylabel('$$\hat{y}$$','Interpreter','Latex', 'FontSize',18)
 
-[corrected_tout_1, corrected_xout_1] = ode113(@(t,state)CR3BP(state, mu), [0, V_soln(7)], V_soln(1:6), options_no_events);
+[corrected_tout_1, corrected_xout_1] = ode113(@(t,state)CR3BP(state, mu), [0, V_soln(8)], V_soln(1:6), options_no_events);
 plot(corrected_xout_1(:,1), corrected_xout_1(:,2), 'Color', 'Blue', 'LineWidth', 2)
 
 fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, V_soln(16:18), f, mdot);
-[corrected_tout_2, corrected_xout_2] = ode113(fun, [0, V_soln(15)], [V_soln(8:13); V_soln(14)], options_no_events);
+[corrected_tout_2, corrected_xout_2] = ode113(fun, [0, V_soln(19)], V_soln(9:15), options_no_events);
 plot(corrected_xout_2(:,1), corrected_xout_2(:,2), 'Color', 'Black', 'LineWidth', 2)
 
 fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, V_soln(27:29), f, mdot);
-[corrected_tout_3, corrected_xout_3] = ode113(fun, [0, V_soln(26)], [V_soln(19:24); V_soln(25)], options_no_events);
+[corrected_tout_3, corrected_xout_3] = ode113(fun, [0, V_soln(30)], V_soln(20:26), options_no_events);
 plot(corrected_xout_3(:,1), corrected_xout_3(:,2), 'Color', 'Magenta', 'LineWidth', 2)
 
-[corrected_tout_4, corrected_xout_4] = ode113(@(t,state)CR3BP(state, mu), [0, V_soln(37)], V_soln(30:35), options_no_events);
+[corrected_tout_4, corrected_xout_4] = ode113(@(t,state)CR3BP(state, mu), [0, V_soln(38)], V_soln(31:36), options_no_events);
 plot(corrected_xout_4(:,1), corrected_xout_4(:,2), 'Color', 'Red', 'LineWidth', 2)
 
 % corrected_final_mass = init_mass + mdot*V_soln(7) - mdot*V_soln(14);

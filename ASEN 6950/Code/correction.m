@@ -32,18 +32,19 @@ function V_soln = correction(V0, system_params, x_1_des, x_2_des, x_3_des, x_4_d
     V(:,1) = V0;
 
     x_1_0 = V0(1:6);
-    Dt1 = V0(7);
-    x_2_0 = V0(8:13);
-    m_2_0 = V0(14);
-    Dt2 = V0(15);
+    m_1 = V0(7);
+    Dt1 = V0(8);
+    x_2_0 = V0(9:14);
+    m_2_0 = V0(15);
     uhat_2 = V0(16:18);
-    x_3_0 = V0(19:24);
-    m_3_0 = V0(25);
-    Dt3 = V0(26);
+    Dt2 = V0(19);
+    x_3_0 = V0(20:25);
+    m_3_0 = V0(26);
     uhat_3 = V0(27:29);
-    x_4_0 = V0(30:35);
-    m_4 = V0(36);
-    Dt4 = V0(37);
+    Dt3 = V0(30);
+    x_4_0 = V0(31:36);
+    m_4 = V0(37);
+    Dt4 = V0(38);
 
     % Define functions
     init_fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, uhat_2, f, mdot);
@@ -62,18 +63,14 @@ function V_soln = correction(V0, system_params, x_1_des, x_2_des, x_3_des, x_4_d
     x_3_f = x3(end,1:6)';
     m_3_f = x3(end,7);
     x_4_f = x4(end,1:6)';
-    % m_4 = m_3_f;
     
-    % statef_V0 = [x_1_f; Dt1; x_2_f; m_2_f; Dt2; uhat_2; x_3_f; m_3_f; Dt3; uhat_3; x_4_f; Dt4];
-    statef_V0 = [x_1_f; Dt1; x_2_f; m_2_f; Dt2; uhat_2; x_3_f; m_3_f; Dt3; uhat_3; x_4_f; m_4; Dt4];
-    % statef_V0 = [x_1_f; Dt1; x_2_f; m_2_f; Dt2; uhat_2];
-
+    statef_V0 = [x_1_f; m_1; Dt1; x_2_f; m_2_f; uhat_2; Dt2; x_3_f; m_3_f; uhat_3; Dt3; x_4_f; m_4; Dt4];
+    
     % While loop params
     counter = 1;
     counter_max = 50;
     
-    % F_norm(1) = norm(F(V0, statef_V0, x_1_des, x_4_des));
-    F_norm(1) = norm(F(V0, statef_V0, x_1_des, x_2_des, x_3_des, x_4_des));
+    F_norm(1) = norm(F(V0, statef_V0, x_1_des, x_4_des));
 
     TOL = 1e-10;
 
@@ -81,18 +78,19 @@ function V_soln = correction(V0, system_params, x_1_des, x_2_des, x_3_des, x_4_d
     while ((F_norm(counter) > TOL) && (counter < counter_max))
         disp("Counter is " + counter);
         x_1_0 = V(1:6,counter);
-        Dt1 = V(7,counter);
-        x_2_0 = V(8:13,counter);
-        m_2_0 = V(14,counter);
-        Dt2 = V(15,counter);
+        m_1 = V(7,counter);
+        Dt1 = V(8,counter);
+        x_2_0 = V(9:14,counter);
+        m_2_0 = V(15,counter);
         uhat_2 = V(16:18,counter);
-        x_3_0 = V(19:24,counter);
-        m_3_0 = V(25,counter);
-        Dt3 = V(26,counter);
+        Dt2 = V(19,counter);
+        x_3_0 = V(20:25,counter);
+        m_3_0 = V(26,counter);
         uhat_3 = V(27:29,counter);
-        x_4_0 = V(30:35,counter);
-        m_4 = V(36,counter);
-        Dt4 = V(37,counter);
+        Dt3 = V(30,counter);
+        x_4_0 = V(31:36,counter);
+        m_4 = V(37,counter);
+        Dt4 = V(38,counter);
 
         % Define functions
         init_fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, uhat_2, f, mdot);
@@ -112,17 +110,11 @@ function V_soln = correction(V0, system_params, x_1_des, x_2_des, x_3_des, x_4_d
         m_3_f = x3(end,7);
         x_4_f = x4(end,1:6)';
 
-        % statef_V = [x_1_f; Dt1; x_2_f; m_2_f; Dt2; uhat_2; x_3_f; m_3_f; Dt3; uhat_3; x_4_f; Dt4];
-        statef_V = [x_1_f; Dt1; x_2_f; m_2_f; Dt2; uhat_2; x_3_f; m_3_f; Dt3; uhat_3; x_4_f; m_4; Dt4];
-        % statef_V = [x_1_f; Dt1; x_2_f; m_2_f; Dt2; uhat_2];
+        statef_V = [x_1_f; m_1;  Dt1; x_2_f; m_2_f; uhat_2; Dt2; x_3_f; m_3_f; uhat_3; Dt3; x_4_f; m_4; Dt4];
 
-        % F_i = F(V(:,counter), statef_V, x_1_des, x_4_des);
-        % DF_i = DF_mat(V(:,counter), statef_V, options, system_params, x_1_des, x_4_des);
+        F_i = F(V(:,counter), statef_V, x_1_des, x_4_des);
+        DF_i = DF_mat(V(:,counter), statef_V, options, system_params);
 
-        F_i = F(V(:,counter), statef_V, x_1_des, x_2_des, x_3_des, x_4_des);
-        DF_i = DF_mat(V(:,counter), statef_V, options, system_params, x_1_des, x_2_des, x_3_des, x_4_des);
-
-        % Find V_i+1
         V(:,counter+1) = V(:,counter) - DF_i' * inv(DF_i * DF_i') * F_i;
     
         % Calculate F_norm and update counter
