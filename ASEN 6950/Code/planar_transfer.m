@@ -472,6 +472,11 @@ V3 = [uncorrected_final_xout(end,1:6)'; mass_3_0; uncorrected_final_thrust; abs(
 
 V0 = [V1; V2; V3; V4];
 
+mass_1_f = mass_1_0;
+mass_2_f = mdot*V0(19) + mass_2_0;
+mass_3_f = mdot*V0(30) + mass_3_0;
+mass_4_f = mass_4_0;
+
 x_1_des = xout_lyapunov_init(1,:)';
 x_4_des = xout_lyapunov_final(end,:)';
 x_2_des = uncorrected_final_xout(end,1:6)';
@@ -537,52 +542,94 @@ hold off
 
 %% Plot corrected trajectory - first four arcs
 
-figure(9)
+figure(12)
 scatter(l2_pos(1), l2_pos(2), 'filled', 'black')
 hold on
-% plot(xout_lyapunov_init(:,1), xout_lyapunov_init(:,2), 'blue', 'LineWidth', 2)
-% plot(xout_lyapunov_final(:,1), xout_lyapunov_final(:,2), 'red', 'LineWidth', 2)
+plot(xout_lyapunov_init(1:uncorrected_init_j,1), xout_lyapunov_init(1:uncorrected_init_j,2), 'Color', [0.5 0.5 0.5], 'LineWidth', 4)
+plot(xout_lyapunov_final(uncorrected_final_j:end,1), xout_lyapunov_final(uncorrected_final_j:end,2), 'Color', [0.5 0.5 0.5], 'LineWidth', 4, 'HandleVisibility','off')
 grid on
+title("Uncorrected Trajectory Option 1")
+xlabel('$$\hat{x}$$','Interpreter','Latex', 'FontSize',18)
+ylabel('$$\hat{y}$$','Interpreter','Latex', 'FontSize',18)
+plot(uncorrected_init_xout(:,1), uncorrected_init_xout(:,2), 'Color', [0.5 0.5 0.5], 'LineWidth', 4, 'HandleVisibility','off')
+plot(uncorrected_final_xout(:,1), uncorrected_final_xout(:,2), 'Color', [0.5 0.5 0.5], 'LineWidth', 4, 'HandleVisibility','off')
+grid on
+legend("L2", "Initial Orbit", "Final Orbit", "Initial Transfer", "Final Transfer")
+
 title("Corrected Trajectory Option 1")
 xlabel('$$\hat{x}$$','Interpreter','Latex', 'FontSize',18)
 ylabel('$$\hat{y}$$','Interpreter','Latex', 'FontSize',18)
 
 [corrected_tout_1, corrected_xout_1] = ode113(@(t,state)CR3BP(state, mu), [0, V_soln(8)], V_soln(1:6), options_no_events);
-plot(corrected_xout_1(:,1), corrected_xout_1(:,2), 'Color', 'Blue', 'LineWidth', 2)
+plot(corrected_xout_1(:,1), corrected_xout_1(:,2), '--', 'Color', 'Blue', 'LineWidth', 2)
 
 fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, V_soln(16:18), f, mdot);
 [corrected_tout_2, corrected_xout_2] = ode113(fun, [0, V_soln(19)], V_soln(9:15), options_no_events);
-plot(corrected_xout_2(:,1), corrected_xout_2(:,2), 'Color', 'Black', 'LineWidth', 2)
+plot(corrected_xout_2(:,1), corrected_xout_2(:,2), '--', 'Color', 'Black', 'LineWidth', 2)
 
 fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, V_soln(27:29), f, mdot);
 [corrected_tout_3, corrected_xout_3] = ode113(fun, [0, V_soln(30)], V_soln(20:26), options_no_events);
-plot(corrected_xout_3(:,1), corrected_xout_3(:,2), 'Color', 'Magenta', 'LineWidth', 2)
+plot(corrected_xout_3(:,1), corrected_xout_3(:,2), '--', 'Color', 'Magenta', 'LineWidth', 2)
 
 [corrected_tout_4, corrected_xout_4] = ode113(@(t,state)CR3BP(state, mu), [0, V_soln(38)], V_soln(31:36), options_no_events);
-plot(corrected_xout_4(:,1), corrected_xout_4(:,2), 'Color', 'Red', 'LineWidth', 2)
+plot(corrected_xout_4(:,1), corrected_xout_4(:,2), '--', 'Color', 'Red', 'LineWidth', 2)
 
-% corrected_final_mass = init_mass + mdot*V_soln(7) - mdot*V_soln(14);
-% 
-% fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, T, Isp, uncorrected_final_thrust, t_star_em, l_star_em, init_mass);
-% [corrected_final_tout, corrected_final_xout] = ode113(fun, [0, V_soln(14)], [V_soln(8:13); corrected_final_mass], options_no_events);
-% plot(corrected_final_xout(:,1), corrected_final_xout(:,2), 'Color', 'magenta', 'LineWidth', 2)
 hold off
-grid on
-legend("L2", "Initial Orbit", "Initial Transfer", "Final Transfer", "Final Orbit")
+legend("L2", "Uncorrected Trajectory", "Initial Orbit", "Initial Transfer", "Final Transfer", "Final Orbit")
 
+%% Plot corrected mass
 
-figure(10)
-plot(corrected_tout_1, ones(length(corrected_tout_1),1), 'Color', 'Blue', 'LineWidth', 2)
+figure(13)
+plot([0, V0(8)], [mass_1_0, mass_1_f], 'Color', [0.5 0.5 0.5], 'LineWidth', 4)
 hold on
+plot([V0(8), V0(8)+V0(19)], [mass_2_0, mass_2_f], 'Color', [0.5 0.5 0.5], 'LineWidth', 4, 'HandleVisibility','off')
+plot([V0(8)+V0(19), V0(8)+V0(19)+V0(30)], [mass_3_0, mass_3_f], 'Color', [0.5 0.5 0.5], 'LineWidth', 4, 'HandleVisibility','off')
+plot([V0(8)+V0(19)+V0(30), V0(8)+V0(19)+V0(30)+V0(38)], [mass_4_0, mass_4_f], 'Color', [0.5 0.5 0.5], 'LineWidth', 4, 'HandleVisibility','off')
+plot(corrected_tout_1, ones(length(corrected_tout_1),1), '--', 'Color', 'Blue', 'LineWidth', 2)
 grid on
 xlabel("Non-dimensional Time")
 ylabel("Spacecraft Non-Dimensional Mass")
 title("Spacecraft Mass over Time")
-plot(corrected_tout_1(end) + corrected_tout_2, corrected_xout_2(:,7), 'Color', 'Black', 'LineWidth', 2)
-plot(corrected_tout_1(end) + corrected_tout_2(end) + corrected_tout_3, corrected_xout_3(:,7), 'Color', 'Magenta', 'LineWidth', 2)
-plot(corrected_tout_1(end) + corrected_tout_2(end) + corrected_tout_3(end) + corrected_tout_4, ones(length(corrected_tout_4),1)*V_soln(36), 'Color', 'Red', 'LineWidth', 2)
-legend("Initial Orbit", "Initial Transfer", "Final Transfer", "Final Orbit")
+plot(corrected_tout_1(end) + corrected_tout_2, corrected_xout_2(:,7), '--', 'Color', 'Black', 'LineWidth', 2)
+plot(corrected_tout_1(end) + corrected_tout_2(end) + corrected_tout_3, corrected_xout_3(:,7), '--', 'Color', 'Magenta', 'LineWidth', 2)
+plot(corrected_tout_1(end) + corrected_tout_2(end) + corrected_tout_3(end) + corrected_tout_4, ones(length(corrected_tout_4),1)*V_soln(37), '--', 'Color', 'Red', 'LineWidth', 2)
+legend("Uncorrected Mass", "Initial Orbit", "Initial Transfer", "Final Transfer", "Final Orbit")
 hold off
+
+%% Plot Jacobi Constant
+
+figure(14)
+c_uncorrected_1 = jacobiConstantCR3BP(xout_lyapunov_init, mu);
+c_uncorrected_2 = jacobiConstantCR3BP(uncorrected_init_xout, mu);
+c_uncorrected_3 = jacobiConstantCR3BP(uncorrected_final_xout, mu);
+c_uncorrected_4 = jacobiConstantCR3BP(xout_lyapunov_final, mu);
+
+uncorrected_time = [tout_lyapunov_init; tout_lyapunov_init(end)+uncorrected_init_tout;
+                    tout_lyapunov_init(end)+uncorrected_init_tout(end)+uncorrected_final_tout;
+                    tout_lyapunov_init(end)+uncorrected_init_tout(end)+uncorrected_final_tout(end)+tout_lyapunov_final];
+
+c_corrected_1 = jacobiConstantCR3BP(corrected_xout_1, mu);
+c_corrected_2 = jacobiConstantCR3BP(corrected_xout_2, mu);
+c_corrected_3 = jacobiConstantCR3BP(corrected_xout_3, mu);
+c_corrected_4 = jacobiConstantCR3BP(corrected_xout_4, mu);
+
+plot(tout_lyapunov_init(1:uncorrected_init_j), c_uncorrected_1(1:uncorrected_init_j), 'Color', [0.5 0.5 0.5], 'LineWidth', 4)
+hold on
+plot(tout_lyapunov_init(uncorrected_init_j)+uncorrected_init_tout, c_uncorrected_2, 'Color', [0.5 0.5 0.5], 'LineWidth', 4, 'HandleVisibility','off')
+plot(tout_lyapunov_init(uncorrected_init_j)+uncorrected_init_tout(end)+uncorrected_final_tout, c_uncorrected_3, 'Color', [0.5 0.5 0.5], 'LineWidth', 4, 'HandleVisibility','off')
+plot(tout_lyapunov_init(uncorrected_init_j)+uncorrected_init_tout(end)+uncorrected_final_tout(end)+tout_lyapunov_final(uncorrected_final_j:end), c_uncorrected_4(uncorrected_final_j:end), 'Color', [0.5 0.5 0.5], 'LineWidth', 4, 'HandleVisibility','off')
+plot(corrected_tout_1, c_corrected_1, '--', 'Color', 'Blue', 'LineWidth', 2)
+plot(corrected_tout_1(end) + corrected_tout_2, c_corrected_2, '--', 'Color', 'Black', 'LineWidth', 2)
+plot(corrected_tout_1(end) + corrected_tout_2(end) + corrected_tout_3, c_corrected_3, '--', 'Color', 'Magenta', 'LineWidth', 2)
+plot(corrected_tout_1(end) + corrected_tout_2(end) + corrected_tout_3(end) + corrected_tout_4, c_corrected_4, '--', 'Color', 'Red', 'LineWidth', 2)
+grid on
+xlabel("Non-dimensional Time")
+ylabel("Spacecraft Non-Dimensional Mass")
+title("Spacecraft Jacobi Constant over Time")
+legend("Uncorrected Mass", "Initial Orbit", "Initial Transfer", "Final Transfer", "Final Orbit")
+hold off
+
+
 
 %% Mdot measured
 
@@ -620,7 +667,4 @@ legend("L2", "Initial Orbit", "Final Orbit", "Initial Transfer", "Final Transfer
 
 %% Jacobi constant
 
-function C = jacobi_constant(x, mu)
-    C = u_star_times_2(x(1), x(2), x(3), mu) - x(4)^2 - x(5)^2 - x(6)^2;
-end
 
