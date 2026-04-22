@@ -1,5 +1,3 @@
-% function V_soln = correction(V0, system_params, T, Isp, uncorrected_init_thrust, uncorrected_final_thrust, t_star_em, l_star, init_mass, uncorrected_final_mass, desired_stage_1, desired_stage_4)
-% function V_soln = correction(V0, system_params, x_1_des, x_4_des)
 function V_soln = correction(V0, system_params, x_1_des, x_2_des, x_3_des, x_4_des)
     % Script to compute a general three-dimensional periodic orbit via multiple shooting
     % Inputs
