@@ -1,4 +1,4 @@
-function V_soln = correction_modular(V0, V_config, system_params, x_init_des, x_final_des)
+function V_soln = correction_modular(V0, V_config, system_params, x_init_des, x_final_des, l1_pos, l2_pos)
     % Script to compute a general three-dimensional periodic orbit via multiple shooting
     % Inputs
     % V0 - initial guess for a free variable vector
@@ -31,7 +31,7 @@ function V_soln = correction_modular(V0, V_config, system_params, x_init_des, x_
 
     % While loop params
     counter = 1;
-    counter_max = 50;
+    counter_max = 10;
 
     % Get final state
     statef_V0 = get_state_f(V0, V_config, options, system_params);
@@ -52,10 +52,14 @@ function V_soln = correction_modular(V0, V_config, system_params, x_init_des, x_
         F_i = F_modular(V{counter}, statef_V, V_config, x_init_des, x_final_des);
         DF_i = cell2mat(DF_mat_modular(V{counter}, V_config, F_i, options, system_params));
 
+        plot_modular(V{counter}, V_config, l1_pos, l2_pos, system_params);
+
         V_i_vec = cell2vec(V{counter});
         F_i_vec = cell2vec(F_i);
         V_out = V_i_vec - DF_i' * inv(DF_i * DF_i') * F_i_vec;
         V{counter+1} = vec2cell(V_out, V_config);
+
+        % plot_modular(V{counter+1}, V_config, l1_pos, l2_pos, system_params);
     
         % Calculate F_norm and update counter
         F_norm(counter+1) = norm(F_i_vec);
@@ -76,6 +80,6 @@ function V_soln = correction_modular(V0, V_config, system_params, x_init_des, x_
     hold off
     legend("Norm", "Threshold")
 
-    V_soln = V(:,end);
+    V_soln = V{counter};
 
 end
