@@ -90,7 +90,7 @@ function DF = DF_mat_modular(V, V_config, F_i, options, system_params)
                 % Thrusting arc
                 uhat_i = V{i-1}(8:10);
                 DF{i,i-1} = [phi_mat{i-1}(1:6,:), xdot_f{i-1}(1:6);
-                            zeros(1,7), 2*uhat_i', 0];
+                            zeros(1,7), uhat_i'/norm(uhat_i), 0];
             end
         else
             % Not last constraint vector
@@ -103,7 +103,7 @@ function DF = DF_mat_modular(V, V_config, F_i, options, system_params)
                 % Thrusting arc
                 uhat_i = V{i-1}(8:10);
                 DF{i,i-1} = [phi_mat{i-1}(1:7,:), xdot_f{i-1}(1:7);
-                            zeros(1,7), 2*uhat_i', 0];
+                            zeros(1,7), uhat_i'/norm(uhat_i), 0];
                 DF{i,i}(1:7,1:7) = -eye(7);
             end
         end

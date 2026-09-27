@@ -1,4 +1,4 @@
-function V_soln = correction_modular(V0, V_config, system_params, x_init_des, x_final_des, l1_pos, l2_pos)
+function V_soln = correction_modular_archive(V0, V_config, system_params, x_init_des, x_final_des, l1_pos, l2_pos)
     % Script to compute a general three-dimensional periodic orbit via multiple shooting
     % Inputs
     % V0 - initial guess for a free variable vector
@@ -56,14 +56,19 @@ function V_soln = correction_modular(V0, V_config, system_params, x_init_des, x_
 
         V_i_vec = cell2vec(V{counter});
         F_i_vec = cell2vec(F_i);
-        V_out = V_i_vec - DF_i' * inv(DF_i * DF_i') * F_i_vec;
+        % V_out = V_i_vec - DF_i' * inv(DF_i * DF_i') * F_i_vec;
         % V_out = V_i_vec - DF_i' * ((DF_i * DF_i') \ F_i_vec);
-        % dV = -pinv(DF_i) * F_i_vec;
+        dV = -pinv(DF_i) * F_i_vec;
         % dV = -DF_i' * ((DF_i * DF_i') \ F_i_vec);
-        % V_out = V_i_vec + dV;
+        fprintf("||F||       = %.6e\n", norm(F_i_vec));
+        fprintf("||dV||      = %.6e\n", norm(dV));
+        fprintf("sigma_max   = %.6e\n", s(1));
+        fprintf("sigma_min   = %.6e\n", s(end));
+        fprintf("cond(DF)    = %.6e\n", s(1)/s(end));
+        V_out = V_i_vec + dV;
         V{counter+1} = vec2cell(V_out, V_config);
 
-        plot_modular(V{counter+1}, V_config, l1_pos, l2_pos, system_params);
+        % plot_modular(V{counter+1}, V_config, l1_pos, l2_pos, system_params);
     
         % Calculate F_norm and update counter
         % F_norm(counter+1) = norm(F_i_vec);

@@ -25,7 +25,7 @@ function F = F_modular(state0, statef, V_config, x_init_des, x_final_des)
                 % If this is a thrusting arc, also constrain uhat magnitude
                 % NOTE - not making sure final mass is >1 as of
                 % 20260415
-                F_i = [F_i; norm(V_i_0(8:10))^2 - 1];
+                F_i = [F_i; norm(V_i_0(8:10)) - 1];
             end
             F{i+1} = F_i;
         else
@@ -64,7 +64,7 @@ function F = F_modular(state0, statef, V_config, x_init_des, x_final_des)
 
                 F_i = [x_i_f - x_ip1_0;
                         m_i_f - m_ip1_0;
-                        norm(uhat_i)^2 - 1];
+                        norm(uhat_i) - 1];
                 F{i+1} = F_i;
             end
         end
