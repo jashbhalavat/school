@@ -1,0 +1,1006 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>ASEN5090_HW3_Code</title>
+<meta name="generator" content="MATLAB 24.1">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2026-09-25">
+<meta name="DC.source" content="ASEN5090_HW3_Code.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#2">ASEN 5090 - HW 3</a>
+</li>
+<li>
+<a href="#3">Add path</a>
+</li>
+<li>
+<a href="#4">Problem 1a</a>
+</li>
+<li>
+<a href="#5">Problem 1b</a>
+</li>
+<li>
+<a href="#6">Problem 1c</a>
+</li>
+<li>
+<a href="#7">Problem 1d</a>
+</li>
+<li>
+<a href="#8">Problem 2a</a>
+</li>
+<li>
+<a href="#9">Problem 2b</a>
+</li>
+<li>
+<a href="#10">Problem 2c</a>
+</li>
+<li>
+<a href="#11">Problem 3a</a>
+</li>
+<li>
+<a href="#12">Problem 3b</a>
+</li>
+<li>
+<a href="#13">Problem 4a</a>
+</li>
+<li>
+<a href="#14">Problem 5</a>
+</li>
+<li>
+<a href="#15">Remove path</a>
+</li>
+<li>
+<a href="#16">FUNCTIONS</a>
+</li>
+</ul>
+</div>
+<pre class="codeinput">clear; clc; close <span class="string">all</span>;
+</pre>
+<h2 id="2">ASEN 5090 - HW 3</h2>
+<p>Jash Bhalavat 09/20/2026</p>
+<pre class="codeinput">
+<span class="comment">% Constants</span>
+
+<span class="comment">% Speed of light in a vacuum</span>
+c = 2.99792458e8; <span class="comment">% m/s, ME Table 4.1</span>
+</pre>
+<h2 id="3">Add path</h2>
+<pre class="codeinput">addpath(<span class="string">"HW3_Code/"</span>)
+addpath(<span class="string">"HW3_DATA/"</span>)
+</pre>
+<h2 id="4">Problem 1a</h2>
+<pre class="codeinput">
+<span class="comment">% Set filename and use rinexread to extract GPS data</span>
+nist_rinex_filename = <span class="string">'NIST00USA_R_20262310000_01D_30S_MO.rnx'</span>;
+rinex_data = rinexread(nist_rinex_filename).GPS;
+
+<span class="comment">% Get time and convert data to arrays</span>
+time = rinex_data.Time;
+rinex_data_array = table2array(rinex_data);
+
+<span class="comment">% Only extract PRN05 data and time</span>
+prn05_data = rinex_data_array(rinex_data_array(:,1) == 5, :);
+prn05_time = time(rinex_data_array(:,1) == 5);
+</pre>
+<h2 id="5">Problem 1b</h2>
+<pre class="codeinput">figure(1)
+plot(prn05_time, prn05_data(:,6), <span class="string">'o'</span>, <span class="string">'LineWidth'</span>,0.25)
+xlabel(<span class="string">"Time"</span>)
+ylabel(<span class="string">"C1C Pseudorange [meters]"</span>)
+grid <span class="string">on</span>
+title(<span class="string">"PRN05 C1C pseudorange vs Time"</span>)
+</pre>
+<h2 id="6">Problem 1c</h2>
+<pre class="codeinput">figure(2)
+plot(prn05_time, prn05_data(:,13), <span class="string">'o'</span>, <span class="string">'LineWidth'</span>,0.25)
+xlabel(<span class="string">"Time"</span>)
+ylabel(<span class="string">"S1C Signal to Noise Ratio [dB-Hz]"</span>)
+grid <span class="string">on</span>
+title(<span class="string">"PRN05 S1C Signal to Noise Ratio vs Time"</span>)
+</pre>
+<h2 id="7">Problem 1d</h2>
+<pre class="codeinput">prn05_l1c_cycles = prn05_data(:,8); <span class="comment">% [cycles]</span>
+l1_frequency = 1575.42e6; <span class="comment">% [hz]</span>
+l1_wavelength = c / l1_frequency; <span class="comment">% [meters]</span>
+prn05_l1c_meters = prn05_l1c_cycles * l1_wavelength;
+
+figure(3)
+subplot(2, 2, [1,3])
+plot(prn05_time, prn05_data(:,6), <span class="string">'o'</span>, <span class="string">'LineWidth'</span>,0.25)
+hold <span class="string">on</span>
+plot(prn05_time, prn05_data(:,28), <span class="string">'o'</span>, <span class="string">'LineWidth'</span>,0.25)
+plot(prn05_time, prn05_l1c_meters, <span class="string">'o'</span>, <span class="string">'LineWidth'</span>,0.25)
+legend(<span class="string">"C1C"</span>, <span class="string">"C2L"</span>, <span class="string">"L1C"</span>)
+xlabel(<span class="string">"Time"</span>)
+ylabel(<span class="string">"Pseudorange [m]"</span>)
+grid <span class="string">on</span>
+title(<span class="string">"C1C, C2L, L1C (converted to meters) vs Time"</span>)
+
+subplot(2,2,2)
+plot(prn05_time, prn05_data(:,6)-prn05_data(:,28))
+grid <span class="string">on</span>
+title(<span class="string">"C1C minus C2L vs Time"</span>)
+ylabel(<span class="string">"Pseudorange [m]"</span>)
+xlabel(<span class="string">"Time"</span>)
+
+subplot(2,2,4)
+plot(prn05_time, prn05_data(:,6)-prn05_l1c_meters)
+grid <span class="string">on</span>
+title(<span class="string">"C1C minus L1C (converted to meters) vs Time"</span>)
+ylabel(<span class="string">"Pseudorange [m]"</span>)
+xlabel(<span class="string">"Time"</span>)
+sgtitle(<span class="string">"PRN05"</span>)
+</pre>
+<h2 id="8">Problem 2a</h2>
+<pre class="codeinput">
+<span class="comment">% Read broadcast file and save data into array</span>
+broadcast_ephem_filename = <span class="string">'brdc2310.26n'</span>;
+ephem_data = read_clean_GPSbroadcast(broadcast_ephem_filename);
+</pre>
+<h2 id="9">Problem 2b</h2>
+<pre class="codeinput">filename = <span class="string">'IGS0OPSFIN_20262310000_01D_15M_ORB.SP3'</span>;
+sp3_data = read_sp3(filename);
+
+prn05_sp3 = sp3_data(sp3_data(:, 3) == 5, :); <span class="comment">% [km]</span>
+time = (prn05_sp3(:,2) - prn05_sp3(1,2))./3600; <span class="comment">% [hr]</span>
+
+week_number = 2432 * ones([length(time), 1]);
+t_input =  [week_number, prn05_sp3(:,2)];
+
+[~, prn05_broadcast, ~, prn05_clock_bias] = eph2pvt2025(ephem_data, t_input, 5);
+
+figure(1)
+subplot(3,2,1)
+plot(time, prn05_sp3(:,4)*1000, <span class="string">'LineWidth'</span>,2)
+hold <span class="string">on</span>
+plot(time, prn05_broadcast(:,1), <span class="string">'LineWidth'</span>,2)
+grid <span class="string">on</span>
+ylabel(<span class="string">"X [m]"</span>)
+xlim([0, 24])
+legend(<span class="string">"SP3"</span>, <span class="string">"Broadcast Ephemeris"</span>)
+title(<span class="string">"SP3 and Broadcast Ephemeris Positions"</span>)
+
+subplot(3,2,3)
+plot(time, prn05_sp3(:,5)*1000, <span class="string">'LineWidth'</span>,2)
+hold <span class="string">on</span>
+plot(time, prn05_broadcast(:,2), <span class="string">'LineWidth'</span>,2)
+grid <span class="string">on</span>
+xlim([0, 24])
+ylabel(<span class="string">"Y [m]"</span>)
+
+subplot(3,2,5)
+plot(time, prn05_sp3(:,6)*1000, <span class="string">'LineWidth'</span>,2)
+hold <span class="string">on</span>
+plot(time, prn05_broadcast(:,3), <span class="string">'LineWidth'</span>,2)
+grid <span class="string">on</span>
+ylabel(<span class="string">"Z [m]"</span>)
+xlim([0, 24])
+xlabel(<span class="string">"Time of DOY 231 [hr]"</span>)
+sgtitle(<span class="string">"PRN05 Position from Broadcast Ephmeris vs SP3"</span>)
+
+subplot(3,2,2)
+plot(time, prn05_sp3(:,4)*1000 - prn05_broadcast(:,1), <span class="string">'LineWidth'</span>,2)
+grid <span class="string">on</span>
+ylabel(<span class="string">"X [m]"</span>)
+xlim([0, 24])
+title(<span class="string">"SP3 minus Broadcast Ephemeris Positions"</span>)
+
+subplot(3,2,4)
+plot(time, prn05_sp3(:,5)*1000 - prn05_broadcast(:,2), <span class="string">'LineWidth'</span>,2)
+grid <span class="string">on</span>
+ylabel(<span class="string">"Y [m]"</span>)
+xlim([0, 24])
+
+subplot(3,2,6)
+plot(time, prn05_sp3(:,6)*1000 - prn05_broadcast(:,3), <span class="string">'LineWidth'</span>,2)
+grid <span class="string">on</span>
+ylabel(<span class="string">"Z [m]"</span>)
+xlabel(<span class="string">"Time of DOY 231 [hr]"</span>)
+</pre>
+<h2 id="10">Problem 2c</h2>
+<pre class="codeinput">figure(2)
+plot(time, prn05_clock_bias, <span class="string">'LineWidth'</span>,2)
+grid <span class="string">on</span>
+ylabel(<span class="string">"Satellite Clock Bias [m]"</span>)
+xlim([0, 24])
+xlabel(<span class="string">"Time of DOY 231 [hr]"</span>)
+title(<span class="string">"PRN05 Clock Bias from Broadcast Ephemeris"</span>)
+</pre>
+<h2 id="11">Problem 3a</h2>
+<pre class="codeinput">
+<span class="comment">% Read broadcast file and save data into array</span>
+broadcast_ephem_filename = <span class="string">'brdc2310.26n'</span>;
+ephem_data = read_clean_GPSbroadcast(broadcast_ephem_filename);
+
+<span class="comment">% Set filename and use rinexread to extract GPS data</span>
+nist_rinex_filename = <span class="string">'NIST00USA_R_20262310000_01D_30S_MO.rnx'</span>;
+rinex_data = rinexread(nist_rinex_filename).GPS;
+
+<span class="comment">% Get time and convert data to arrays</span>
+time = rinex_data.Time;
+rinex_data_array = table2array(rinex_data);
+
+<span class="comment">% Only extract PRN05 data and time</span>
+prn05_obs_data = rinex_data_array(rinex_data_array(:,1) == 5, :);
+prn05_obs_time = time(rinex_data_array(:,1) == 5);
+prn05_obs_time.TimeZone = <span class="string">'UTC'</span>;
+
+<span class="comment">% Define the absolute GPS Epoch (January 6, 1980 is a Sunday)</span>
+gpsEpoch = datetime(1980, 1, 6, <span class="string">'TimeZone'</span>, <span class="string">'UTC'</span>);
+gpsEpochArray = repmat(gpsEpoch, size(prn05_obs_time));
+
+<span class="comment">% Calculate total days elapsed since the GPS epoch</span>
+totalDays = floor(days(prn05_obs_time - gpsEpochArray));
+
+<span class="comment">% Find the GPS Week Number</span>
+gpsWeek = floor(totalDays / 7);
+
+<span class="comment">% Find the start of the current GPS week (the previous Sunday at 00:00:00)</span>
+currentSunday = gpsEpoch + days(gpsWeek * 7);
+
+<span class="comment">% Calculate Time of Week (TOW) in seconds</span>
+TOW = seconds(prn05_obs_time - currentSunday);
+
+week_number = 2432 * ones([length(TOW), 1]);
+t_input =  [week_number, TOW];
+
+[~, prn05_broadcast] = eph2pvt2025(ephem_data, t_input, 5);
+
+[prn05_az_R0, prn05_el_R0, prn05_range_R0] = compute_azelrange(nist_ecef, prn05_broadcast);
+
+plot_time = (t_input(:,2)-t_input(1,2))/3600;
+
+figure(1)
+subplot(3,1,1)
+plot(plot_time, prn05_az_R0,<span class="string">'o'</span>,<span class="string">'MarkerSize'</span>,3)
+grid <span class="string">on</span>
+ylabel(<span class="string">"Azimuth [deg]"</span>)
+xlim([0, 24])
+
+subplot(3,1,2)
+plot(plot_time, prn05_el_R0,<span class="string">'o'</span>,<span class="string">'MarkerSize'</span>,3)
+grid <span class="string">on</span>
+xlim([0, 24])
+ylabel(<span class="string">"Elevation [deg]"</span>)
+
+subplot(3,1,3)
+plot(plot_time, prn05_range_R0,<span class="string">'o'</span>,<span class="string">'MarkerSize'</span>,3)
+grid <span class="string">on</span>
+ylabel(<span class="string">"Range [m]"</span>)
+xlim([0, 24])
+xlabel(<span class="string">"Time of DOY 231 [hr]"</span>)
+sgtitle(<span class="string">"PRN05 Az-El-Range (R0)"</span>)
+</pre>
+<h2 id="12">Problem 3b</h2>
+<pre class="codeinput">prn05_range_R1 = compute_expected_range(t_input, prn05_broadcast, nist_ecef, c, ephem_data, 5, omega_dot);
+
+figure(2)
+subplot(1,2,1)
+plot(plot_time, prn05_range_R0,<span class="string">'o'</span>,<span class="string">'MarkerSize'</span>,3)
+hold <span class="string">on</span>
+plot(plot_time, prn05_range_R1,<span class="string">'o'</span>,<span class="string">'MarkerSize'</span>,3)
+grid <span class="string">on</span>
+ylabel(<span class="string">"Range [m]"</span>)
+xlim([0, 24])
+xlabel(<span class="string">"Time of DOY 231 [hr]"</span>)
+legend(<span class="string">"R0"</span>, <span class="string">"R1"</span>)
+title(<span class="string">"R0 and R1 ranges"</span>)
+
+subplot(1,2,2)
+plot(plot_time, prn05_range_R1 - prn05_range_R0,<span class="string">'o'</span>,<span class="string">'MarkerSize'</span>,3)
+grid <span class="string">on</span>
+ylabel(<span class="string">"Range difference [m]"</span>)
+xlim([0, 24])
+xlabel(<span class="string">"Time of DOY 231 [hr]"</span>)
+title(<span class="string">"R1 minus R0"</span>)
+
+largest_difference = max(abs(prn05_range_R1 - prn05_range_R0));
+</pre>
+<h2 id="13">Problem 4a</h2>
+<pre class="codeinput">figure(3)
+subplot(1,2,1)
+plot(plot_time, prn05_obs_data(:,6), <span class="string">'o'</span>, <span class="string">'MarkerSize'</span>, 3)
+hold <span class="string">on</span>
+plot(plot_time, prn05_range_R1, <span class="string">'o'</span>, <span class="string">'MarkerSize'</span>, 3)
+grid <span class="string">on</span>
+xlim([0, 24])
+ylabel(<span class="string">"Ranges [m]"</span>)
+xlabel(<span class="string">"Time of DOY 231 [hr]"</span>)
+legend(<span class="string">"C1C"</span>, <span class="string">"R1"</span>)
+title(<span class="string">"Observed and Computed Range"</span>)
+sgtitle(<span class="string">"PRN05 Observed vs Computed Range"</span>)
+
+subplot(1,2,2)
+plot(plot_time, prn05_obs_data(:,6) - prn05_range_R1, <span class="string">'o'</span>, <span class="string">'LineWidth'</span>,0.25)
+xlabel(<span class="string">"Time"</span>)
+xlim([0, 24])
+ylabel(<span class="string">"C1C Pseudorange [meters]"</span>)
+grid <span class="string">on</span>
+title(<span class="string">"Observed minus Computed vs Time"</span>)
+</pre>
+<h2 id="14">Problem 5</h2>
+<pre class="codeinput">
+<span class="comment">% Read broadcast file and save data into array</span>
+broadcast_ephem_filename = <span class="string">'brdc2310.26n'</span>;
+ephem_data = read_clean_GPSbroadcast(broadcast_ephem_filename);
+
+<span class="comment">% Set filename and use rinexread to extract GPS data</span>
+nist_rinex_filename = <span class="string">'NIST00USA_R_20262310000_01D_30S_MO.rnx'</span>;
+rinex_data = rinexread(nist_rinex_filename).GPS;
+
+<span class="comment">% Get time and convert data to arrays</span>
+time = rinex_data.Time;
+rinex_data_array = table2array(rinex_data);
+
+<span class="comment">% Only extract PRN20 data and time</span>
+prn20_obs_data = rinex_data_array(rinex_data_array(:,1) == 20, :);
+prn20_obs_time = time(rinex_data_array(:,1) == 20);
+prn20_obs_time.TimeZone = <span class="string">'UTC'</span>;
+
+<span class="comment">% Define the absolute GPS Epoch (January 6, 1980 is a Sunday)</span>
+gpsEpoch = datetime(1980, 1, 6, <span class="string">'TimeZone'</span>, <span class="string">'UTC'</span>);
+gpsEpochArray = repmat(gpsEpoch, size(prn20_obs_time));
+
+<span class="comment">% Calculate total days elapsed since the GPS epoch</span>
+totalDays = floor(days(prn20_obs_time - gpsEpochArray));
+
+<span class="comment">% Find the GPS Week Number</span>
+gpsWeek = floor(totalDays / 7);
+
+<span class="comment">% Find the start of the current GPS week (the previous Sunday at 00:00:00)</span>
+currentSunday = gpsEpoch + days(gpsWeek * 7);
+
+<span class="comment">% Calculate Time of Week (TOW) in seconds</span>
+TOW = seconds(prn20_obs_time - currentSunday);
+
+week_number = 2432 * ones([length(TOW), 1]);
+t_input =  [week_number, TOW];
+
+[~, prn20_broadcast] = eph2pvt2025(ephem_data, t_input, 20);
+
+[prn20_az_R0, prn20_el_R0, prn20_range_R0] = compute_azelrange(nist_ecef, prn20_broadcast);
+
+plot_time = (t_input(:,2)-t_input(1,2))/3600;
+
+figure(1)
+subplot(3,1,1)
+plot(plot_time, prn20_az_R0,<span class="string">'o'</span>,<span class="string">'MarkerSize'</span>,3)
+grid <span class="string">on</span>
+ylabel(<span class="string">"Azimuth [deg]"</span>)
+xlim([0, 24])
+
+subplot(3,1,2)
+plot(plot_time, prn20_el_R0,<span class="string">'o'</span>,<span class="string">'MarkerSize'</span>,3)
+grid <span class="string">on</span>
+xlim([0, 24])
+ylabel(<span class="string">"Elevation [deg]"</span>)
+
+subplot(3,1,3)
+plot(plot_time, prn20_range_R0,<span class="string">'o'</span>,<span class="string">'MarkerSize'</span>,3)
+grid <span class="string">on</span>
+ylabel(<span class="string">"Range [m]"</span>)
+xlim([0, 24])
+xlabel(<span class="string">"Time of DOY 231 [hr]"</span>)
+sgtitle(<span class="string">"PRN20 Az-El-Range (R0)"</span>)
+
+prn20_range_R1 = compute_expected_range(t_input, prn20_broadcast, nist_ecef, c, ephem_data, 20, omega_dot);
+
+figure(2)
+subplot(1,2,1)
+plot(plot_time, prn20_range_R0,<span class="string">'o'</span>,<span class="string">'MarkerSize'</span>,3)
+hold <span class="string">on</span>
+plot(plot_time, prn20_range_R1,<span class="string">'o'</span>,<span class="string">'MarkerSize'</span>,3)
+grid <span class="string">on</span>
+ylabel(<span class="string">"Range [m]"</span>)
+xlim([0, 24])
+xlabel(<span class="string">"Time of DOY 231 [hr]"</span>)
+legend(<span class="string">"R0"</span>, <span class="string">"R1"</span>)
+title(<span class="string">"R0 and R1 ranges"</span>)
+
+subplot(1,2,2)
+plot(plot_time, prn20_range_R1 - prn20_range_R0,<span class="string">'o'</span>,<span class="string">'MarkerSize'</span>,3)
+grid <span class="string">on</span>
+ylabel(<span class="string">"Range difference [m]"</span>)
+xlim([0, 24])
+xlabel(<span class="string">"Time of DOY 231 [hr]"</span>)
+title(<span class="string">"R1 minus R0"</span>)
+
+largest_difference = max(abs(prn20_range_R1 - prn20_range_R0));
+
+figure(3)
+subplot(1,2,1)
+plot(plot_time, prn20_obs_data(:,6), <span class="string">'o'</span>, <span class="string">'MarkerSize'</span>, 3)
+hold <span class="string">on</span>
+plot(plot_time, prn20_range_R1, <span class="string">'o'</span>, <span class="string">'MarkerSize'</span>, 3)
+grid <span class="string">on</span>
+xlim([0, 24])
+ylabel(<span class="string">"Ranges [m]"</span>)
+xlabel(<span class="string">"Time of DOY 231 [hr]"</span>)
+legend(<span class="string">"C1C"</span>, <span class="string">"R1"</span>)
+title(<span class="string">"Observed and Computed Range"</span>)
+sgtitle(<span class="string">"PRN20 Observed vs Computed Range"</span>)
+
+subplot(1,2,2)
+plot(plot_time, prn20_obs_data(:,6) - prn20_range_R1, <span class="string">'o'</span>, <span class="string">'LineWidth'</span>,0.25)
+xlabel(<span class="string">"Time"</span>)
+xlim([0, 24])
+ylabel(<span class="string">"C1C Pseudorange [meters]"</span>)
+grid <span class="string">on</span>
+title(<span class="string">"Observed minus Computed vs Time"</span>)
+</pre>
+<h2 id="15">Remove path</h2>
+<pre class="codeinput">rmpath(<span class="string">"HW2_Code/"</span>)
+rmpath(<span class="string">"HW2_DATA/"</span>)
+rmpath(<span class="string">"HW3_Code/"</span>)
+rmpath(<span class="string">"HW3_DATA/"</span>)
+rmpath(<span class="string">"../HW 2"</span>)
+</pre>
+<h2 id="16">FUNCTIONS</h2>
+<pre class="codeinput">
+<span class="keyword">function</span> R1 = compute_expected_range(t_r, r_gps_tr, r_rx, c, ephem_data, prn, omega_E)
+    <span class="comment">% Computed expected range given Tr [WN, TOW], r_gps [ECEF, m], c [m/s]</span>
+    max_count = 5;
+
+    <span class="comment">% Initial measure of time taken for signal to get from satellite to</span>
+    <span class="comment">% receiver</span>
+    dt = norm(r_gps_tr(1,:) - r_rx)/c;
+
+    <span class="keyword">for</span> j = 1:max_count
+        <span class="keyword">for</span> i = 1:length(t_r)
+            <span class="comment">% Step 2</span>
+            R(i) = norm(r_gps_tr(i,:) - r_rx);
+
+            <span class="comment">% Step 3</span>
+            t_t(i,1) = t_r(i,2) - R(i)/c;
+        <span class="keyword">end</span>
+        t_t = [t_r(:,1), t_t];
+
+        <span class="comment">% Step 4</span>
+        [~, r_gps_tt] = eph2pvt2025(ephem_data, t_t, prn);
+
+        <span class="comment">% Step 5</span>
+        <span class="keyword">for</span> i = 1:length(t_r)
+            phi = omega_E * (t_r(i,2)-t_t(i,2));
+            r_gps_tr(i,:) = ([cos(phi), sin(phi), 0; -sin(phi), cos(phi), 0; 0, 0, 1] * r_gps_tt(i,:)')';
+
+            <span class="comment">% Step 6</span>
+            R1(i,1) = norm(r_gps_tr(i,:) - r_rx);
+        <span class="keyword">end</span>
+
+        <span class="comment">% Calculate new signal travel time</span>
+        dt_new = R1(1)/c;
+
+        <span class="comment">% Compare signal travel times and break if within tolerance</span>
+        <span class="keyword">if</span> abs(dt_new - dt) &lt; 1e-12
+            <span class="keyword">break</span>
+        <span class="keyword">end</span>
+
+        <span class="comment">% If not within tolerance, update current dt</span>
+        dt = dt_new;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024a</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+clear; clc; close all;
+
+%% ASEN 5090 - HW 3
+% Jash Bhalavat
+% 09/20/2026
+
+% Constants
+
+% Speed of light in a vacuum
+c = 2.99792458e8; % m/s, ME Table 4.1
+
+%% Add path
+
+addpath("HW3_Code/")
+addpath("HW3_DATA/")
+
+%% Problem 1a
+
+% Set filename and use rinexread to extract GPS data
+nist_rinex_filename = 'NIST00USA_R_20262310000_01D_30S_MO.rnx';
+rinex_data = rinexread(nist_rinex_filename).GPS;
+
+% Get time and convert data to arrays
+time = rinex_data.Time;
+rinex_data_array = table2array(rinex_data);
+
+% Only extract PRN05 data and time
+prn05_data = rinex_data_array(rinex_data_array(:,1) == 5, :);
+prn05_time = time(rinex_data_array(:,1) == 5);
+
+%% Problem 1b
+
+figure(1)
+plot(prn05_time, prn05_data(:,6), 'o', 'LineWidth',0.25)
+xlabel("Time")
+ylabel("C1C Pseudorange [meters]")
+grid on
+title("PRN05 C1C pseudorange vs Time")
+
+%% Problem 1c
+
+figure(2)
+plot(prn05_time, prn05_data(:,13), 'o', 'LineWidth',0.25)
+xlabel("Time")
+ylabel("S1C Signal to Noise Ratio [dB-Hz]")
+grid on
+title("PRN05 S1C Signal to Noise Ratio vs Time")
+
+%% Problem 1d
+
+prn05_l1c_cycles = prn05_data(:,8); % [cycles]
+l1_frequency = 1575.42e6; % [hz]
+l1_wavelength = c / l1_frequency; % [meters]
+prn05_l1c_meters = prn05_l1c_cycles * l1_wavelength;
+
+figure(3)
+subplot(2, 2, [1,3])
+plot(prn05_time, prn05_data(:,6), 'o', 'LineWidth',0.25)
+hold on
+plot(prn05_time, prn05_data(:,28), 'o', 'LineWidth',0.25)
+plot(prn05_time, prn05_l1c_meters, 'o', 'LineWidth',0.25)
+legend("C1C", "C2L", "L1C")
+xlabel("Time")
+ylabel("Pseudorange [m]")
+grid on
+title("C1C, C2L, L1C (converted to meters) vs Time")
+
+subplot(2,2,2)
+plot(prn05_time, prn05_data(:,6)-prn05_data(:,28))
+grid on
+title("C1C minus C2L vs Time")
+ylabel("Pseudorange [m]")
+xlabel("Time")
+
+subplot(2,2,4)
+plot(prn05_time, prn05_data(:,6)-prn05_l1c_meters)
+grid on
+title("C1C minus L1C (converted to meters) vs Time")
+ylabel("Pseudorange [m]")
+xlabel("Time")
+sgtitle("PRN05")
+
+
+%% Problem 2a
+
+% Read broadcast file and save data into array
+broadcast_ephem_filename = 'brdc2310.26n';
+ephem_data = read_clean_GPSbroadcast(broadcast_ephem_filename);
+
+%% Problem 2b
+
+filename = 'IGS0OPSFIN_20262310000_01D_15M_ORB.SP3';
+sp3_data = read_sp3(filename);
+
+prn05_sp3 = sp3_data(sp3_data(:, 3) == 5, :); % [km]
+time = (prn05_sp3(:,2) - prn05_sp3(1,2))./3600; % [hr]
+
+week_number = 2432 * ones([length(time), 1]);
+t_input =  [week_number, prn05_sp3(:,2)];
+
+[~, prn05_broadcast, ~, prn05_clock_bias] = eph2pvt2025(ephem_data, t_input, 5);
+
+figure(1)
+subplot(3,2,1)
+plot(time, prn05_sp3(:,4)*1000, 'LineWidth',2)
+hold on
+plot(time, prn05_broadcast(:,1), 'LineWidth',2)
+grid on
+ylabel("X [m]")
+xlim([0, 24])
+legend("SP3", "Broadcast Ephemeris")
+title("SP3 and Broadcast Ephemeris Positions")
+
+subplot(3,2,3)
+plot(time, prn05_sp3(:,5)*1000, 'LineWidth',2)
+hold on
+plot(time, prn05_broadcast(:,2), 'LineWidth',2)
+grid on
+xlim([0, 24])
+ylabel("Y [m]")
+
+subplot(3,2,5)
+plot(time, prn05_sp3(:,6)*1000, 'LineWidth',2)
+hold on
+plot(time, prn05_broadcast(:,3), 'LineWidth',2)
+grid on
+ylabel("Z [m]")
+xlim([0, 24])
+xlabel("Time of DOY 231 [hr]")
+sgtitle("PRN05 Position from Broadcast Ephmeris vs SP3")
+
+subplot(3,2,2)
+plot(time, prn05_sp3(:,4)*1000 - prn05_broadcast(:,1), 'LineWidth',2)
+grid on
+ylabel("X [m]")
+xlim([0, 24])
+title("SP3 minus Broadcast Ephemeris Positions")
+
+subplot(3,2,4)
+plot(time, prn05_sp3(:,5)*1000 - prn05_broadcast(:,2), 'LineWidth',2)
+grid on
+ylabel("Y [m]")
+xlim([0, 24])
+
+subplot(3,2,6)
+plot(time, prn05_sp3(:,6)*1000 - prn05_broadcast(:,3), 'LineWidth',2)
+grid on
+ylabel("Z [m]")
+xlabel("Time of DOY 231 [hr]")
+
+%% Problem 2c
+
+figure(2)
+plot(time, prn05_clock_bias, 'LineWidth',2)
+grid on
+ylabel("Satellite Clock Bias [m]")
+xlim([0, 24])
+xlabel("Time of DOY 231 [hr]")
+title("PRN05 Clock Bias from Broadcast Ephemeris")
+
+%% Problem 3a
+
+% Read broadcast file and save data into array
+broadcast_ephem_filename = 'brdc2310.26n';
+ephem_data = read_clean_GPSbroadcast(broadcast_ephem_filename);
+
+% Set filename and use rinexread to extract GPS data
+nist_rinex_filename = 'NIST00USA_R_20262310000_01D_30S_MO.rnx';
+rinex_data = rinexread(nist_rinex_filename).GPS;
+
+% Get time and convert data to arrays
+time = rinex_data.Time;
+rinex_data_array = table2array(rinex_data);
+
+% Only extract PRN05 data and time
+prn05_obs_data = rinex_data_array(rinex_data_array(:,1) == 5, :);
+prn05_obs_time = time(rinex_data_array(:,1) == 5);
+prn05_obs_time.TimeZone = 'UTC';
+
+% Define the absolute GPS Epoch (January 6, 1980 is a Sunday)
+gpsEpoch = datetime(1980, 1, 6, 'TimeZone', 'UTC');
+gpsEpochArray = repmat(gpsEpoch, size(prn05_obs_time));
+
+% Calculate total days elapsed since the GPS epoch
+totalDays = floor(days(prn05_obs_time - gpsEpochArray));
+
+% Find the GPS Week Number 
+gpsWeek = floor(totalDays / 7);
+
+% Find the start of the current GPS week (the previous Sunday at 00:00:00)
+currentSunday = gpsEpoch + days(gpsWeek * 7);
+
+% Calculate Time of Week (TOW) in seconds
+TOW = seconds(prn05_obs_time - currentSunday);
+
+week_number = 2432 * ones([length(TOW), 1]);
+t_input =  [week_number, TOW];
+
+[~, prn05_broadcast] = eph2pvt2025(ephem_data, t_input, 5);
+
+[prn05_az_R0, prn05_el_R0, prn05_range_R0] = compute_azelrange(nist_ecef, prn05_broadcast);
+
+plot_time = (t_input(:,2)-t_input(1,2))/3600;
+
+figure(1)
+subplot(3,1,1)
+plot(plot_time, prn05_az_R0,'o','MarkerSize',3)
+grid on
+ylabel("Azimuth [deg]")
+xlim([0, 24])
+
+subplot(3,1,2)
+plot(plot_time, prn05_el_R0,'o','MarkerSize',3)
+grid on
+xlim([0, 24])
+ylabel("Elevation [deg]")
+
+subplot(3,1,3)
+plot(plot_time, prn05_range_R0,'o','MarkerSize',3)
+grid on
+ylabel("Range [m]")
+xlim([0, 24])
+xlabel("Time of DOY 231 [hr]")
+sgtitle("PRN05 Az-El-Range (R0)")
+
+%% Problem 3b
+
+prn05_range_R1 = compute_expected_range(t_input, prn05_broadcast, nist_ecef, c, ephem_data, 5, omega_dot);
+
+figure(2)
+subplot(1,2,1)
+plot(plot_time, prn05_range_R0,'o','MarkerSize',3)
+hold on
+plot(plot_time, prn05_range_R1,'o','MarkerSize',3)
+grid on
+ylabel("Range [m]")
+xlim([0, 24])
+xlabel("Time of DOY 231 [hr]")
+legend("R0", "R1")
+title("R0 and R1 ranges")
+
+subplot(1,2,2)
+plot(plot_time, prn05_range_R1 - prn05_range_R0,'o','MarkerSize',3)
+grid on
+ylabel("Range difference [m]")
+xlim([0, 24])
+xlabel("Time of DOY 231 [hr]")
+title("R1 minus R0")
+
+largest_difference = max(abs(prn05_range_R1 - prn05_range_R0));
+
+%% Problem 4a
+
+figure(3)
+subplot(1,2,1)
+plot(plot_time, prn05_obs_data(:,6), 'o', 'MarkerSize', 3)
+hold on
+plot(plot_time, prn05_range_R1, 'o', 'MarkerSize', 3)
+grid on
+xlim([0, 24])
+ylabel("Ranges [m]")
+xlabel("Time of DOY 231 [hr]")
+legend("C1C", "R1")
+title("Observed and Computed Range")
+sgtitle("PRN05 Observed vs Computed Range")
+
+subplot(1,2,2)
+plot(plot_time, prn05_obs_data(:,6) - prn05_range_R1, 'o', 'LineWidth',0.25)
+xlabel("Time")
+xlim([0, 24])
+ylabel("C1C Pseudorange [meters]")
+grid on
+title("Observed minus Computed vs Time")
+
+%% Problem 5
+
+% Read broadcast file and save data into array
+broadcast_ephem_filename = 'brdc2310.26n';
+ephem_data = read_clean_GPSbroadcast(broadcast_ephem_filename);
+
+% Set filename and use rinexread to extract GPS data
+nist_rinex_filename = 'NIST00USA_R_20262310000_01D_30S_MO.rnx';
+rinex_data = rinexread(nist_rinex_filename).GPS;
+
+% Get time and convert data to arrays
+time = rinex_data.Time;
+rinex_data_array = table2array(rinex_data);
+
+% Only extract PRN20 data and time
+prn20_obs_data = rinex_data_array(rinex_data_array(:,1) == 20, :);
+prn20_obs_time = time(rinex_data_array(:,1) == 20);
+prn20_obs_time.TimeZone = 'UTC';
+
+% Define the absolute GPS Epoch (January 6, 1980 is a Sunday)
+gpsEpoch = datetime(1980, 1, 6, 'TimeZone', 'UTC');
+gpsEpochArray = repmat(gpsEpoch, size(prn20_obs_time));
+
+% Calculate total days elapsed since the GPS epoch
+totalDays = floor(days(prn20_obs_time - gpsEpochArray));
+
+% Find the GPS Week Number 
+gpsWeek = floor(totalDays / 7);
+
+% Find the start of the current GPS week (the previous Sunday at 00:00:00)
+currentSunday = gpsEpoch + days(gpsWeek * 7);
+
+% Calculate Time of Week (TOW) in seconds
+TOW = seconds(prn20_obs_time - currentSunday);
+
+week_number = 2432 * ones([length(TOW), 1]);
+t_input =  [week_number, TOW];
+
+[~, prn20_broadcast] = eph2pvt2025(ephem_data, t_input, 20);
+
+[prn20_az_R0, prn20_el_R0, prn20_range_R0] = compute_azelrange(nist_ecef, prn20_broadcast);
+
+plot_time = (t_input(:,2)-t_input(1,2))/3600;
+
+figure(1)
+subplot(3,1,1)
+plot(plot_time, prn20_az_R0,'o','MarkerSize',3)
+grid on
+ylabel("Azimuth [deg]")
+xlim([0, 24])
+
+subplot(3,1,2)
+plot(plot_time, prn20_el_R0,'o','MarkerSize',3)
+grid on
+xlim([0, 24])
+ylabel("Elevation [deg]")
+
+subplot(3,1,3)
+plot(plot_time, prn20_range_R0,'o','MarkerSize',3)
+grid on
+ylabel("Range [m]")
+xlim([0, 24])
+xlabel("Time of DOY 231 [hr]")
+sgtitle("PRN20 Az-El-Range (R0)")
+
+prn20_range_R1 = compute_expected_range(t_input, prn20_broadcast, nist_ecef, c, ephem_data, 20, omega_dot);
+
+figure(2)
+subplot(1,2,1)
+plot(plot_time, prn20_range_R0,'o','MarkerSize',3)
+hold on
+plot(plot_time, prn20_range_R1,'o','MarkerSize',3)
+grid on
+ylabel("Range [m]")
+xlim([0, 24])
+xlabel("Time of DOY 231 [hr]")
+legend("R0", "R1")
+title("R0 and R1 ranges")
+
+subplot(1,2,2)
+plot(plot_time, prn20_range_R1 - prn20_range_R0,'o','MarkerSize',3)
+grid on
+ylabel("Range difference [m]")
+xlim([0, 24])
+xlabel("Time of DOY 231 [hr]")
+title("R1 minus R0")
+
+largest_difference = max(abs(prn20_range_R1 - prn20_range_R0));
+
+figure(3)
+subplot(1,2,1)
+plot(plot_time, prn20_obs_data(:,6), 'o', 'MarkerSize', 3)
+hold on
+plot(plot_time, prn20_range_R1, 'o', 'MarkerSize', 3)
+grid on
+xlim([0, 24])
+ylabel("Ranges [m]")
+xlabel("Time of DOY 231 [hr]")
+legend("C1C", "R1")
+title("Observed and Computed Range")
+sgtitle("PRN20 Observed vs Computed Range")
+
+subplot(1,2,2)
+plot(plot_time, prn20_obs_data(:,6) - prn20_range_R1, 'o', 'LineWidth',0.25)
+xlabel("Time")
+xlim([0, 24])
+ylabel("C1C Pseudorange [meters]")
+grid on
+title("Observed minus Computed vs Time")
+
+
+%% Remove path
+
+rmpath("HW2_Code/")
+rmpath("HW2_DATA/")
+rmpath("HW3_Code/")
+rmpath("HW3_DATA/")
+rmpath("../HW 2")
+
+
+%% FUNCTIONS
+
+function R1 = compute_expected_range(t_r, r_gps_tr, r_rx, c, ephem_data, prn, omega_E)
+    % Computed expected range given Tr [WN, TOW], r_gps [ECEF, m], c [m/s]
+    max_count = 5;
+
+    % Initial measure of time taken for signal to get from satellite to
+    % receiver
+    dt = norm(r_gps_tr(1,:) - r_rx)/c;
+
+    for j = 1:max_count
+        for i = 1:length(t_r)
+            % Step 2
+            R(i) = norm(r_gps_tr(i,:) - r_rx);
+    
+            % Step 3
+            t_t(i,1) = t_r(i,2) - R(i)/c;
+        end
+        t_t = [t_r(:,1), t_t];
+    
+        % Step 4
+        [~, r_gps_tt] = eph2pvt2025(ephem_data, t_t, prn);
+    
+        % Step 5
+        for i = 1:length(t_r)
+            phi = omega_E * (t_r(i,2)-t_t(i,2));
+            r_gps_tr(i,:) = ([cos(phi), sin(phi), 0; -sin(phi), cos(phi), 0; 0, 0, 1] * r_gps_tt(i,:)')';
+    
+            % Step 6
+            R1(i,1) = norm(r_gps_tr(i,:) - r_rx);
+        end
+
+        % Calculate new signal travel time
+        dt_new = R1(1)/c;
+
+        % Compare signal travel times and break if within tolerance
+        if abs(dt_new - dt) < 1e-12
+            break
+        end
+
+        % If not within tolerance, update current dt
+        dt = dt_new;
+    end
+end
+
+
+##### SOURCE END #####
+-->
+</body>
+</html>
