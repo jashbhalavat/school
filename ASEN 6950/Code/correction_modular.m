@@ -63,7 +63,7 @@ function V_soln = correction_modular(V0, V_config, system_params, x_init_des, x_
         % V_out = V_i_vec + dV;
         V{counter+1} = vec2cell(V_out, V_config);
 
-        plot_modular(V{counter+1}, V_config, l1_pos, l2_pos, system_params);
+        plot_modular(V{counter}, V_config, l1_pos, l2_pos, system_params);
     
         % Calculate F_norm and update counter
         % F_norm(counter+1) = norm(F_i_vec);
