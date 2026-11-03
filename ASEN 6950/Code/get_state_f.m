@@ -53,7 +53,10 @@ function statef_V = get_state_f(V, V_config, options, system_params)
             % Now populate statef
             statef_V{i} = [x_i_f; m_i_f; uhat_i_0; Dti];
         end
+        % hold on
+        % plot(xi(:,1), xi(:,2), 'green', 'linewidth', 2)
     end
+
 
 
 end

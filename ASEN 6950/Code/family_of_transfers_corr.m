@@ -90,6 +90,9 @@ for i = 1:num_angles
     thrust_direction_25(:,i) = dcm * neg_y_vec;
 end
 
+num_pre_moon = 20;
+num_post_moon = 20;
+
 %% Find files
 
 load('saved_final_state_init_mult_cross.mat');
@@ -102,7 +105,7 @@ file_list = dir('final_nondim_mass_*');
 final_states_single = [];
 final_states_mult = [];
 
-for i = 1:length(file_list)
+for i = 31:length(file_list)
     file_name = file_list(i).name;
     final_mass(i,1) = str2double(file_name(end-15:end-4));
 
@@ -161,7 +164,11 @@ for i = 1:length(file_list)
     uncorrected_init_state0 = xout_lyapunov_init(uncorrected_init_j,:);
     uncorrected_final_state0 = xout_lyapunov_final(uncorrected_final_j,:);
     uncorrected_init_thrust = thrust_direction_50(:,uncorrected_init_i);
-    uncorrected_final_thrust = thrust_direction_25(:,uncorrected_final_i);
+    if max(mult_cross(:,4)) > 25
+        uncorrected_final_thrust = thrust_direction_50(:,uncorrected_final_i);
+    else
+        uncorrected_final_thrust = thrust_direction_25(:,uncorrected_final_i);
+    end
     
     figure()
     scatter(l2_pos(1), l2_pos(2), 'filled', 'black')
@@ -193,7 +200,7 @@ for i = 1:length(file_list)
         fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, uncorrected_init_thrust, f, mdot);
         [init_output_time, uncorrected_init_xout] = ode113(fun, [0, uncorrected_init_time], [uncorrected_init_state0, 1], options_mult_cross);
         fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, uncorrected_final_thrust, f, mdot);
-        [final_output_time, uncorrected_final_xout] = ode113(fun, [0, -25], [uncorrected_final_state0, final_mass(i)], options_single_cross);
+        [final_output_time, uncorrected_final_xout] = ode113(fun, [0, uncorrected_final_time], [uncorrected_final_state0, final_mass(i)], options_mult_cross);
     end
     
     plot(uncorrected_init_xout(:,1), uncorrected_init_xout(:,2), 'Color', 'black', 'LineWidth', 2)
@@ -215,23 +222,66 @@ for i = 1:length(file_list)
     % mass_4_0 = mass_3_0 + mdot*(tout_lyapunov_final(end) - tout_lyapunov_final(uncorrected_final_j));
     mass_4_0 = final_mass(i,1);
 
-    V1 = [xout_lyapunov_init(1,:)'; mass_1_0; tout_lyapunov_init(uncorrected_init_j)];
-    V4 = [xout_lyapunov_final(uncorrected_final_j,:)'; mass_4_0; tout_lyapunov_final(end) - tout_lyapunov_final(uncorrected_final_j)];
-    V2 = [uncorrected_init_state0'; mass_2_0; uncorrected_init_thrust; init_output_time(end)];
-    V3 = [uncorrected_final_xout(end,:)'; uncorrected_final_thrust; abs(uncorrected_final_time)];
+    pre_moon_int = floor(length(uncorrected_init_xout)/num_pre_moon);
+    post_moon_int = floor(length(uncorrected_final_xout)/num_post_moon);
+
+    % V0 = cell(num_pre_moon+num_post_moon+2, 1);
+    V_config = [0, 1];
+    V1{1,1} = [xout_lyapunov_init(1,:)'; mass_1_0; tout_lyapunov_init(uncorrected_init_j)];
+    V4{1,1} = [xout_lyapunov_final(uncorrected_final_j,:)'; mass_4_0; tout_lyapunov_final(end) - tout_lyapunov_final(uncorrected_final_j)];
+    V2{1,1} = [uncorrected_init_state0'; mass_2_0; uncorrected_init_thrust; init_output_time(pre_moon_int)];
+
+    final_output_time = abs(final_output_time);
+
+    if (final_output_time(end)-final_output_time(num_post_moon*post_moon_int)) > 0
+        V3{1,1} = [uncorrected_final_xout(end,:)'; uncorrected_final_thrust; final_output_time(end)-final_output_time(num_post_moon*post_moon_int)];
+        V_config = [V_config 1];
+        cnt = 2;
+    else
+        cnt = 1;
+    end
+    
+
+    for j = 1:num_pre_moon
+        if j == num_pre_moon
+            if (init_output_time(end)-init_output_time(j*pre_moon_int)) > 0
+                V2{j+1,1} = [uncorrected_init_xout(j*pre_moon_int,:)'; uncorrected_init_thrust; init_output_time(end)-init_output_time(j*pre_moon_int)];
+                V_config = [V_config 1];
+            end
+        else
+            V2{j+1,1} = [uncorrected_init_xout(j*pre_moon_int,:)'; uncorrected_init_thrust; init_output_time((j+1)*pre_moon_int)-init_output_time(j*pre_moon_int)];
+            V_config = [V_config 1];
+        end
+        
+    end
+    % cnt = 1;
+    % V_config = [V_config 1];
+    for k = num_post_moon:-1:1
+        if k == 1
+            V3{cnt,1} = [uncorrected_final_xout(k*post_moon_int,:)'; uncorrected_final_thrust; final_output_time(k*post_moon_int)];
+        else
+            V3{cnt,1} = [uncorrected_final_xout(k*post_moon_int,:)'; uncorrected_final_thrust; final_output_time((k)*post_moon_int)-final_output_time((k-1)*post_moon_int)];
+        end
+        V_config = [V_config 1];
+        cnt = cnt+1;
+    end
+    
+    
+    V_config = [0, ones(1, length(V2)+length(V3)), 0];
+    V0 = [V1; V2; V3; V4];
     % V4 = [uncorrected_final_xout(end,1:6)'; uncorrected_final_xout(end,7); uncorrected_final_thrust; abs(uncorrected_final_tout(end))-abs(uncorrected_final_tout(79))];
     % V5 = [uncorrected_final_xout(79,1:6)'; uncorrected_final_xout(79,7); uncorrected_final_thrust; abs(uncorrected_final_tout(79))];
 
     % This array determines whether a particular arc is natural or thrusting
     % 0 indicates natural arc and 1 indicates thrusting arc
-    V_config = [0, 1, 1, 0];
+    % V_config = [0, 1, 1, 0];
     % V_config = [0, 1, 1, 1, 0];
 
-    V0 = cell(4, 1);
-    V0{1} = V1;
-    V0{2} = V2;
-    V0{3} = V3;
-    V0{4} = V4;
+    % V0 = cell(4, 1);
+    % V0{1} = V1;
+    % V0{2} = V2;
+    % V0{3} = V3;
+    % V0{4} = V4;
     % V0{5} = V5;
     % V0{6} = V6;
 

@@ -31,7 +31,7 @@ function V_soln = correction_modular(V0, V_config, system_params, x_init_des, x_
 
     % While loop params
     counter = 1;
-    counter_max = 10;
+    counter_max = 20;
 
     % Get final state
     statef_V0 = get_state_f(V0, V_config, options, system_params);
