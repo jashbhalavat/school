@@ -176,11 +176,11 @@ for j = 1:length(xout_lyapunov_init)
         fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, thrust_direction(:,i), f, mdot);
         [tout, xout] = ode113(fun, [0, 10], init_state_0, options_single_cross);
         
-        if (xout(end,2) < 0.5) & (xout(end,2) > -0.5) 
-            count = count + 1;
-            saved_final_state_init_single_cross(count,:) = [xout(end,2), xout(end,4), xout(end,5), i, j, xout(end,7)];
-            init_traj = plot(xout(:,1), xout(:,2), 'Color', 'blue');
-        end
+        % if (xout(end,2) < 0.5) & (xout(end,2) > -0.5) 
+        count = count + 1;
+        saved_final_state_init_single_cross(count,:) = [xout(end,2), xout(end,4), xout(end,5), i, j, xout(end,7)];
+        init_traj = plot(xout(:,1), xout(:,2), 'Color', 'blue');
+        % end
         % end
     end
 end
@@ -309,15 +309,13 @@ for j = 1:length(xout_lyapunov_init)
         fun = @(t,state)CR3BP_with_non_dim_mass(state, mu, thrust_direction(:,i), f, mdot);
         sol = ode113(fun, [0, 15], init_state_0, options_mult_cross);
         if isempty(sol.xe) == 0
-            if (sol.ye(2,end) < 0.5) && (sol.ye(2,end) > -0.5)
-                seconds_init = sol.xe(end);
-                saved_final_state_init_mult_cross(count,:) = [sol.ye(2,end), sol.ye(4,end), sol.ye(5,end), i, j, seconds_init, sol.ye(7,end)];
-                [tout, xout] = ode113(fun, [0, seconds_init], init_state_0, options_no_events);
-                init_traj = plot(xout(:,1), xout(:,2), 'Color', 'b');
-            end
-        end
-
-        
+            % if (sol.ye(2,end) < 0.5) && (sol.ye(2,end) > -0.5)
+            seconds_init = sol.xe(end);
+            saved_final_state_init_mult_cross(count,:) = [sol.ye(2,end), sol.ye(4,end), sol.ye(5,end), i, j, seconds_init, sol.ye(7,end)];
+            [tout, xout] = ode113(fun, [0, seconds_init], init_state_0, options_no_events);
+            init_traj = plot(xout(:,1), xout(:,2), 'Color', 'b');
+            % end
+        end      
     end
 end
 
@@ -477,24 +475,24 @@ mass_4_0 = 0.985;
 % V5 = [uncorrected_final_xout(76,1:6)'; uncorrected_final_xout(76,7); uncorrected_final_thrust; abs(uncorrected_final_tout(76))];
 
 V1 = [xout_lyapunov_init(1,:)'; mass_1_0; tout_lyapunov_init(uncorrected_init_j)];
-V4 = [xout_lyapunov_final(uncorrected_final_j,:)'; mass_4_0; tout_lyapunov_final(end) - tout_lyapunov_final(uncorrected_final_j)];
-V2 = [uncorrected_init_state0'; mass_2_0; uncorrected_init_thrust; uncorrected_init_tout(end)];
-% V3 = [uncorrected_init_xout(74,1:6)'; uncorrected_init_xout(74,7); uncorrected_init_thrust; uncorrected_init_tout(end)-uncorrected_init_tout(74)];
-V3 = [uncorrected_final_xout(end,1:6)'; mass_3_0; uncorrected_final_thrust; abs(uncorrected_final_tout(end))];
-% V5 = [uncorrected_final_xout(76,1:6)'; uncorrected_final_xout(76,7); uncorrected_final_thrust; abs(uncorrected_final_tout(76))];
+V6 = [xout_lyapunov_final(uncorrected_final_j,:)'; mass_4_0; tout_lyapunov_final(end) - tout_lyapunov_final(uncorrected_final_j)];
+V2 = [uncorrected_init_state0'; mass_2_0; uncorrected_init_thrust; uncorrected_init_tout(127)];
+V3 = [uncorrected_init_xout(127,1:6)'; uncorrected_init_xout(127,7); uncorrected_init_thrust; uncorrected_init_tout(end)-uncorrected_init_tout(127)];
+V4 = [uncorrected_final_xout(end,1:6)'; uncorrected_final_xout(end,7); uncorrected_final_thrust; abs(uncorrected_final_tout(end))-abs(uncorrected_final_tout(79))];
+V5 = [uncorrected_final_xout(79,1:6)'; uncorrected_final_xout(79,7); uncorrected_final_thrust; abs(uncorrected_final_tout(79))];
 
 % This array determines whether a particular arc is natural or thrusting
 % 0 indicates natural arc and 1 indicates thrusting arc
-% V_config = [0, 1, 1, 1, 1, 0];
-V_config = [0, 1, 1, 0];
+V_config = [0, 1, 1, 1, 1, 0];
+% V_config = [0, 1, 1, 1, 0];
 
-V0 = cell(4, 1);
+V0 = cell(6, 1);
 V0{1} = V1;
 V0{2} = V2;
 V0{3} = V3;
 V0{4} = V4;
-% V0{5} = V5;
-% V0{6} = V6;
+V0{5} = V5;
+V0{6} = V6;
 
 system_params = [mu, t_star_em, l_star_em, T, Isp, init_mass, f, mdot];
 % plot_modular(V0, V_config, l1_pos, l2_pos, system_params);
@@ -518,3 +516,8 @@ x_4_des = xout_lyapunov_final(end,:)';
 
 V_soln = correction_modular(V0, V_config, system_params, x_1_des, x_4_des, l1_pos, l2_pos);
 % V_soln = correction_modular(V0, V_config, system_params, x_1_des, temp, l1_pos, l2_pos);
+
+%% Plot
+
+% plot_full_modular(V_soln, V_config, l1_pos, l2_pos, system_params);
+plot_full_comparison_modular(V0, V_soln, V_config, l1_pos, l2_pos, system_params);
